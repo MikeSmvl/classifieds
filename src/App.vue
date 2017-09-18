@@ -1,15 +1,7 @@
 <template>
   <v-app>
-    <v-navigation-drawer temporary v-model="sidebar">
-    </v-navigation-drawer>
-    <v-toolbar fixed>
-      <span class="hidden-sm-and-up">
-        <v-toolbar-side-icon @click.stop="sidebar = !sidebar">
-        </v-toolbar-side-icon>
-      </span>
-      <v-toolbar-title>{{ appTitle }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-toolbar>
+    
+    <navbar></navbar>
 
     <main>
       <v-container fluid>
@@ -22,15 +14,12 @@
   </v-app>
 </template>
 <script>
+  import Navbar from './components/Navbar.vue'
   export default {
-    data () {
-      return {
-        appTitle: 'Classifieds',
-        sidebar: false
-      }
+    components: {
+      'Navbar': Navbar
     }
   }
 </script>
-<style lang="stylus">
-  @import './stylus/main'
+<style>
 </style>
