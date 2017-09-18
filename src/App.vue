@@ -2,6 +2,7 @@
   <v-app>
     
     <navbar></navbar>
+    <searchbar></searchbar>
 
     <main>
       <v-container fluid>
@@ -15,9 +16,11 @@
 </template>
 <script>
   import Navbar from './components/Navbar.vue'
+  import SearchBar from './components/SearchBar.vue'
   export default {
     components: {
-      'Navbar': Navbar
+      'navbar': Navbar,
+      'searchbar': SearchBar
     }
   }
 </script>
