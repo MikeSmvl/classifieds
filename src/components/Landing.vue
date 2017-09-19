@@ -5,7 +5,7 @@
     </v-flex>
     <v-flex xs12 sm6 offset-sm3 mt-3>
     <blockquote>
-      It's a basics application with authentication,real-time database and hosted on google Firebase hosting
+      SOEN 341 Project Application
     </blockquote>
     </v-flex>
     <v-flex class="text-xs-center" mt-5>
