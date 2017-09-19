@@ -1,7 +1,16 @@
 <template>
-  <v-layout row>
-    <v-flex>
-      <h3>Landing page</h3>
+  <v-layout column>
+    <v-flex xs12 class="text-xs-center" mt-5>
+      <h3>Welcome to Classifieds App</h3>
+    </v-flex>
+    <v-flex xs12 sm6 offset-sm3 mt-3>
+    <blockquote>
+      It's a basics application with authentication,real-time database and hosted on google Firebase hosting
+    </blockquote>
+    </v-flex>
+    <v-flex class="text-xs-center" mt-5>
+      <v-btn primary to="/signup">Sign Up</v-btn>
+      <v-btn to="/signin">Sign In</v-btn>
     </v-flex>
   </v-layout>
 </template>
