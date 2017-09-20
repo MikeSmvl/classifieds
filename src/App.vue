@@ -1,8 +1,15 @@
 <template>
   <v-app>
-    
-    <navbar></navbar>
-    <searchbar></searchbar>
+    <v-navigation-drawer temporary v-model="sidebar">
+    </v-navigation-drawer>
+    <v-toolbar fixed>
+      <span class="hidden-sm-and-up">
+        <v-toolbar-side-icon @click.stop="sidebar = !sidebar">
+        </v-toolbar-side-icon>
+      </span>
+      <v-toolbar-title>{{ appTitle }}</v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-toolbar>
 
     <main>
       <v-container fluid>
@@ -15,14 +22,24 @@
   </v-app>
 </template>
 <script>
-  import Navbar from './components/Navbar.vue'
-  import SearchBar from './components/SearchBar.vue'
   export default {
-    components: {
-      'navbar': Navbar,
-      'searchbar': SearchBar
+    data () {
+      return {
+        sidebar: false,
+        menuItems: [
+          { title: 'Home', path: '/home', icon: 'home' },
+          { title: 'Sign Up', path: '/signup', icon: 'face' },
+          { title: 'Sign In', path: '/signin', icon: 'lock_open' }
+        ]
+      }
+    },
+    computed: {
+      appTitle () {
+        return this.$store.getters.appTitle
+      }
     }
   }
 </script>
-<style>
+<style lang="stylus">
+  @import './stylus/main'
 </style>
