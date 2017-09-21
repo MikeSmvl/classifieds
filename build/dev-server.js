@@ -11,6 +11,7 @@ var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
+var bunyan = require('bunyan');
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -69,6 +70,13 @@ var _resolve
 var readyPromise = new Promise(resolve => {
   _resolve = resolve
 })
+
+//TODO: prototype for logging -- create a module for application logging, with log rotation to be completed.
+var log = bunyan.createLogger({
+  name: 'ClassifiedLogger'
+});
+log.info('> Logging info starting dev server...');
+//-- end of logging
 
 console.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
