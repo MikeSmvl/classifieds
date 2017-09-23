@@ -18,7 +18,7 @@
     </v-navigation-drawer>
 
 
-    <v-toolbar fixed>
+    <v-toolbar dense dark fixed class="light-blue darken-1">
       <span class="hidden-sm-and-up">
         <v-toolbar-side-icon @click.stop="sidebar = !sidebar">
         </v-toolbar-side-icon>
@@ -36,6 +36,9 @@
           </v-icon>
           {{item.title}}
         </v-btn>
+        <v-btn to="/signin" flat>Sign in</v-btn>
+        <v-btn to="/signup" flat>Register</v-btn>
+        <v-btn class="green accent-4" flat>Post ad</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 

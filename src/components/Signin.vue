@@ -3,7 +3,7 @@
     <v-flex xs12 class="text-xs-center" mt-5>
       <h3>Sign In</h3>
     </v-flex>
-    <v-flex xs12 sm6 offset-sm3 mt-3>
+    <v-flex xs12 sm6 offset-sm4 mt-4>
       <form>
         <v-layout column>
           <v-flex>
