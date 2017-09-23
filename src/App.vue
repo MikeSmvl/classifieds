@@ -4,8 +4,7 @@
 
     <v-navigation-drawer temporary v-model="sidebar">
       <v-list>
-        <v-list-tile
-          v-for="item in menuItems" :key="item.title" :to="item.path">
+        <v-list-tile v-for="item in menuItems" :key="item.title" :to="item.path">
           <v-list-tile-action>
             <v-icon>
               {{item.icon}}
@@ -25,21 +24,19 @@
         </v-toolbar-side-icon>
       </span>
       <v-toolbar-title>
-      <router-link to="/" tag="span" style="cursor: pointer">
-        {{appTitle}}
-      </router-link>
+        <router-link to="/" tag="span" style="cursor: pointer">
+          {{appTitle}}
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
-        <v-btn
-          flat
-          v-for="item in MenuItems" :key="item.title" :to="item.path">
+        <v-btn flat v-for="item in MenuItems" :key="item.title" :to="item.path">
           <v-icon left dark>
             {{item.icon}}
           </v-icon>
           {{item.title}}
-          </v-btn>
-    </v-toolbar-items>
+        </v-btn>
+      </v-toolbar-items>
     </v-toolbar>
 
 
@@ -69,10 +66,11 @@
       VToolbar,
       VIcon,
       VListTileAction,
-      VListTile},
+      VListTile
+    },
     data () {
       return {
-        appTitle: 'Classified Exchange App',
+        // appTitle: 'Classified Exchange App',
         sidebar: false,
         menuItems: [
           { title: 'Home', path: '/home', icon: 'home' },
@@ -80,8 +78,14 @@
           { title: 'Sign In', path: '/signin', icon: 'lock_open' }
         ]
       }
+    },
+    computed: {
+      appTitle () {
+        return this.$store.getters.appTitle
+      }
     }
   }
+
 </script>
 
 
