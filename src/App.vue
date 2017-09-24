@@ -61,7 +61,6 @@
   import VIcon from '../node_modules/vuetify/src/components/VIcon/VIcon.vue'
   import VToolbar from '../node_modules/vuetify/src/components/VToolbar/VToolbar.vue'
   import VBtn from '../node_modules/vuetify/src/components/VBtn/VBtn.vue'
-  import Searchbar from './Searchbar.vue'
 
   export default {
     components: {
