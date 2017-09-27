@@ -19,6 +19,12 @@ new Vue({
   el: '#app',
   router,
   store,
-  template: '<App/>',
-  components: { App }
+  render: h => h(App),
+  created () {
+    firebase.auth().onAuthStateChanged((firebaseUser) => {
+      if (firebaseUser) {
+        store.dispatch('autoSignIn', firebaseUser)
+      }
+    })
+  }
 })
