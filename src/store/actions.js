@@ -40,7 +40,7 @@ export const actions = {
       description: payload.description,
       date: payload.date
     }
-    firebase.database().ref('ads ').push(ad)
+    firebase.database().ref('ads').push(ad)
       .then((data) => {
         alert('Ad Created')
         console.log(data)
