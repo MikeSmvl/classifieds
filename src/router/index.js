@@ -5,7 +5,8 @@ const routerArray = [
   { path: '/', component: 'Landing' },
   { path: '/signin', component: 'Signin' },
   { path: '/signup', component: 'Signup' },
-  { path: '/home', component: 'Home' }
+  { path: '/home', component: 'Home' },
+  { path: '/userProfile', component: 'UserProfile' }
 ]
 
 const routes = routerArray.map(route => {
