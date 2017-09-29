@@ -6,14 +6,14 @@
     <v-flex class="text-xs-center" mt-5>
       <p>This is a user's home page</p>
     </v-flex>
-    <ad></ad>
+    <adList></adList>
   </v-layout>
 </template>
 <script>
-  import Ad from './Ad.vue'
+  import AdList from './AdList.vue'
   export default {
     components: {
-      'ad': Ad
+      'adList': AdList
     }
   }
 </script>
