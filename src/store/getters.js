@@ -10,5 +10,8 @@ export const getters = {
   },
   getLoading (state) {
     return state.loading
+  },
+  getAdList (state) {
+    return state.adList
   }
 }

@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import {rootRef} from '../main.js'
 import router from '@/router'
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -31,5 +32,15 @@ export const actions = {
   },
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
+  },
+  retrieveAdList ({commit}, payload) {
+    commit('setLoading', true)
+    rootRef.orderByValue().on('value', (snapshot) => {
+      let adList = new Array(Object.keys(snapshot).length)
+      snapshot.forEach(ad => {
+        adList.push(ad.val())
+      })
+      commit('setAdList', adList)
+    })
   }
 }

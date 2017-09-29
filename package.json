@@ -11,7 +11,12 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "child_process": "^1.0.2",
+    "dns": "^0.2.2",
     "firebase": "^4.4.0",
+    "fs": "0.0.1-security",
+    "net": "^1.0.2",
+    "tls": "0.0.1",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
     "vuetify": "^0.15.7",
