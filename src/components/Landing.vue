@@ -1,5 +1,6 @@
 <template>
   <v-layout column>
+    <searchbar></searchbar>
     <v-flex xs12 class="text-xs-center" mt-5>
       <h3>Welcome to Classifieds App</h3>
     </v-flex>
@@ -15,5 +16,10 @@
   </v-layout>
 </template>
 <script>
-  export default {}
+  import Searchbar from '../components/Searchbar.vue'
+  export default {
+    components: {
+      Searchbar
+    }
+  }
 </script>
