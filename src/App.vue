@@ -38,6 +38,7 @@
         </v-btn>
         <v-btn to="/signin" flat>Sign in</v-btn>
         <v-btn to="/signup" flat>Register</v-btn>
+        <v-btn to="/userProfile" flat>My Profile</v-btn>
         <v-btn to="/postad" class="green accent-4" flat>Post ad</v-btn>
       </v-toolbar-items>
     </v-toolbar>
