@@ -42,8 +42,6 @@
       </v-toolbar-items>
     </v-toolbar>
 
-    <searchbar></searchbar>
-
     <main>
       <v-container fluid>
         <router-view>
