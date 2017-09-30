@@ -9,8 +9,9 @@ before_script:
      - chmod ugo+x scripts/run-build.sh
        #script: 
        #./scripts/run-build.sh
+     - npm install
 
 notifications:
         slack: 17vjismOkiSuf4Xpg0sC7yPH
-        on_success: change
-        on_failure: change
+        on_success: :change
+        on_failure: :change
