@@ -13,5 +13,5 @@ script:
 after_script:
 notifications:
         slack: 17vjismOkiSuf4Xpg0sC7yPH
-        on_success:change
-        on_failure:change
+        on_success: change
+        on_failure: change
