@@ -5,6 +5,8 @@ node_js:
 
 install: true
 
+before_script: 
+     - chmod ugo+x scripts/run-build.sh
 script: 
         ./scripts/run-build.sh
 
