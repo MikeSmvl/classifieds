@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+     - "stable"
+branches:
+       only:
+            feature/ci
+install:
+      - npm install
+      - npm run build
+
