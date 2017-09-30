@@ -15,16 +15,16 @@ Vue.config.productionTip = false
 firebase.initializeApp(firebaseConfig)
 
 /* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App),
-  created () {
-    firebase.auth().onAuthStateChanged((firebaseUser) => {
-      if (firebaseUser) {
-        store.dispatch('autoSignIn', firebaseUser)
-      }
-    })
-  }
+const unsubscribe = firebase.auth()
+.onAuthStateChanged((firebaseUser) => {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    render: h => h(App),
+    created () {
+      store.dispatch('autoSignIn', firebaseUser)
+    }
+  })
+  unsubscribe()
 })
