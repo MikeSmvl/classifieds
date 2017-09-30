@@ -10,3 +10,5 @@ before_script:
 script: 
         ./scripts/run-build.sh
 
+notifications:
+        slack: 17vjismOkiSuf4Xpg0sC7yPH
