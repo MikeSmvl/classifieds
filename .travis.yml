@@ -12,3 +12,5 @@ script:
 
 notifications:
         slack: 17vjismOkiSuf4Xpg0sC7yPH
+        on_success: always
+        on_failure: always
