@@ -3,7 +3,8 @@ node_js:
      - "stable"
 
 
-install:
-      - npm install
-      - npm run build
+install: true
+
+script: 
+        ./scripts/run-build.sh
 
