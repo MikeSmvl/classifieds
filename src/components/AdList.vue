@@ -27,9 +27,6 @@ export default {
   data () {
     return {}
   },
-  mounted () {
-    this.adList()
-  },
   computed: {
     adList () {
       return this.$store.getters.getAdList
