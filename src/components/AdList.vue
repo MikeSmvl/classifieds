@@ -4,9 +4,8 @@
       <v-card>
         <v-list two-line>
           <template v-for="ad in adList">
-            <v-subheader v-if="ad.title" v-text="ad.title"></v-subheader>
-            <v-divider v-else-if="ad.divider" v-bind:inset="ad.inset"></v-divider>
-            <v-list-tile avatar v-else v-bind:key="ad.location" @click="" download>
+            <v-divider v-bind:inset="true"></v-divider>
+            <v-list-tile avatar v-bind:key="ad.location" @click="">
               <v-list-tile-avatar>
                 <img v-bind:src="ad.imageUrl">
               </v-list-tile-avatar>
