@@ -34,6 +34,23 @@ export const actions = {
   },
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
+  },
+  createAd ({commit}, payload) {
+    const ad = {
+      title: payload.title,
+      location: payload.location,
+      imageUrl: payload.imageUrl,
+      description: payload.description,
+      date: payload.date
+    }
+    firebase.database().ref('ads').push(ad)
+      .then((data) => {
+        alert('Ad Created')
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 }
 

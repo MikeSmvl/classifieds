@@ -18,7 +18,7 @@
     </v-navigation-drawer>
 
 
-    <v-toolbar dense dark fixed class="light-blue darken-1">
+    <v-toolbar dense dark class="light-blue darken-1">
       <span class="hidden-sm-and-up">
         <v-toolbar-side-icon @click.stop="sidebar = !sidebar">
         </v-toolbar-side-icon>
@@ -38,7 +38,8 @@
         </v-btn>
         <v-btn to="/signin" flat>Sign in</v-btn>
         <v-btn to="/signup" flat>Register</v-btn>
-        <v-btn class="green accent-4" flat>Post ad</v-btn>
+        <v-btn to="/userProfile" flat>My Profile</v-btn>
+        <v-btn to="/postad" class="green accent-4" flat>Post ad</v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -61,6 +62,7 @@
   import VIcon from '../node_modules/vuetify/src/components/VIcon/VIcon.vue'
   import VToolbar from '../node_modules/vuetify/src/components/VToolbar/VToolbar.vue'
   import VBtn from '../node_modules/vuetify/src/components/VBtn/VBtn.vue'
+  import Searchbar from './components/Searchbar.vue'
 
   export default {
     components: {
@@ -68,7 +70,8 @@
       VToolbar,
       VIcon,
       VListTileAction,
-      VListTile
+      VListTile,
+      Searchbar
     },
     data () {
       return {
