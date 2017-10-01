@@ -7,6 +7,7 @@ export const actions = {
     firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
+      retrieveAdList({commit})
       commit('setLoading', false)
       router.push('/home')
     })
@@ -21,6 +22,7 @@ export const actions = {
     firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
+      retrieveAdList({commit})
       commit('setLoading', false)
       commit('setError', null)
       router.push('/home')
@@ -32,15 +34,20 @@ export const actions = {
   },
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
-  },
-  retrieveAdList ({commit}, payload) {
-    commit('setLoading', true)
-    rootRef.orderByValue().on('value', (snapshot) => {
-      let adList = new Array(Object.keys(snapshot).length)
-      snapshot.forEach(ad => {
-        adList.push(ad.val())
-      })
-      commit('setAdList', adList)
-    })
   }
+}
+
+const retrieveAdList = ({commit}) => {
+  rootRef.orderByValue().on('value', (snapshot) => {
+    // Creates an array with length of snapshot size
+    let adList = new Array(Object.keys(snapshot).length)
+    // Pushes data into the array
+    snapshot.forEach(ad => {
+      adList.push(ad.val())
+    })
+    // Filter out the items that are null
+    const reformattedAdList = adList.filter(ad => ad !== null)
+    // Mutate the AdList by modifying the state
+    commit('setAdList', reformattedAdList)
+  })
 }
