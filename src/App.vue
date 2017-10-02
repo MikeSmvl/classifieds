@@ -14,6 +14,12 @@
             {{item.title}}
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile v-if="isAuthenticated" @click="userSignOut">
+          <v-list-tile-action>
+            <v-icon>exit_to_app</v-icon>
+          </v-list-tile-action>
+        <v-list-tile-content>Sign Out</v-list-tile-content>
+      </v-list-tile>
       </v-list>
     </v-navigation-drawer>
 
@@ -36,10 +42,14 @@
           </v-icon>
           {{item.title}}
         </v-btn>
-        <v-btn to="/signin" flat>Sign in</v-btn>
-        <v-btn to="/signup" flat>Register</v-btn>
-        <v-btn to="/userProfile" flat>My Profile</v-btn>
+        <v-btn to="/signin" flat v-if="!(isAuthenticated)">Sign in</v-btn>
+        <v-btn to="/signup" flat v-if="!(isAuthenticated)">Register</v-btn>
+        <v-btn to="/userProfile" flat v-if="isAuthenticated">My Profile</v-btn>
         <v-btn to="/postad" class="green accent-4" flat>Post ad</v-btn>
+        <v-btn flat v-if="isAuthenticated" @click="userSignOut">
+          <v-icon left>exit_to_app</v-icon>
+            Sign Out
+        </v-btn>
       </v-toolbar-items>
     </v-toolbar>
 
@@ -77,16 +87,31 @@
       return {
         // appTitle: 'Classified Exchange App',
         sidebar: false,
-        menuItems: [
-          { title: 'Home', path: '/home', icon: 'home' },
-          { title: 'Sign Up', path: '/signup', icon: 'face' },
-          { title: 'Sign In', path: '/signin', icon: 'lock_open' }
-        ]
+        menuItems () {
+          if (this.isAuthenticated) {
+            return [
+             { title: 'Home', path: '/home', icon: 'home' }
+            ]
+          } else {
+            return [
+             { title: 'Sign Up', path: '/signup', icon: 'face' },
+             { title: 'Sign In', path: '/signin', icon: 'lock_open' }
+            ]
+          }
+        }
       }
     },
     computed: {
       appTitle () {
         return this.$store.getters.appTitle
+      },
+      isAuthenticated () {
+        return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+      }
+    },
+    methods: {
+      userSignOut () {
+        this.$store.dispatch('userSignOut')
       }
     }
   }
