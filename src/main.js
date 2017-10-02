@@ -14,6 +14,8 @@ Vue.config.productionTip = false
 
 firebase.initializeApp(firebaseConfig)
 
+export const rootRef = firebase.database().ref('ads ')
+
 /* eslint-disable no-new */
 const unsubscribe = firebase.auth()
 .onAuthStateChanged((firebaseUser) => {

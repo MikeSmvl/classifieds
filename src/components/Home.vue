@@ -6,9 +6,14 @@
     <v-flex class="text-xs-center" mt-5>
       <p>This is a user's home page</p>
     </v-flex>
+    <adList></adList>
   </v-layout>
 </template>
 <script>
+  import AdList from './AdList.vue'
   export default {
+    components: {
+      'adList': AdList
+    }
   }
 </script>
