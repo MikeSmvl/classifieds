@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+     - "stable"
+
+
+install: true
+
+before_script: 
+     - chmod ugo+x scripts/run-build.sh
+script: 
+       ./scripts/run-build.sh
+
+notifications:
+        slack: soen341-groupb:17vjismOkiSuf4Xpg0sC7yPH
+        on_success: :change
+        on_failure: :change

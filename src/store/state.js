@@ -1,3 +1,7 @@
 export const state = {
-  appTitle: 'Classifieds'
+  appTitle: 'Classifieds',
+  user: null,
+  adList: [],
+  error: null,
+  loading: false
 }

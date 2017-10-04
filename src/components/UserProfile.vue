@@ -4,16 +4,18 @@
       <h3>Home</h3>
     </v-flex>
     <v-flex class="text-xs-center" mt-5>
-      <p>This is a user's home page</p>
+      <p>Connected user information</p>
+      <p>Email: {{getUser.email}}</p>
+      <p>Uid: {{getUser.uid}}</p>
     </v-flex>
-    <adList></adList>
   </v-layout>
 </template>
 <script>
-  import AdList from './AdList.vue'
   export default {
-    components: {
-      'adList': AdList
+    computed: {
+      getUser () {
+        return this.$store.getters.getUser
+      }
     }
   }
 </script>
