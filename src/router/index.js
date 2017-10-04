@@ -21,9 +21,14 @@ const routes = routerOptions.map(route => {
 
 Vue.use(Router)
 
+import NotFound from '@/components/NotFound'
+
 const router = new Router({
   mode: 'history',
-  routes
+  routes: [
+    ...routes,
+    { path: '*', component: NotFound }
+  ]
 })
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
