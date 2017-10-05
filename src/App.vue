@@ -30,7 +30,10 @@
         </v-toolbar-side-icon>
       </span>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
+        <router-link to="/" v-if="!(isAuthenticated)" tag="span" style="cursor: pointer">
+          {{appTitle}}
+        </router-link>
+        <router-link to="/home" v-if="isAuthenticated" tag="span" style="cursor: pointer">
           {{appTitle}}
         </router-link>
       </v-toolbar-title>
