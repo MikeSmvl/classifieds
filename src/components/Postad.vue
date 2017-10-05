@@ -74,6 +74,14 @@ export default {
     },
     loading () {
       return this.$store.getters.getLoading
+    },
+    createAd () {
+      this.date = new Date()
+      this.$store.dispatch('createAd', {title: this.title,
+        location: this.location,
+        imageUrl: this.imageUrl,
+        description: this.description,
+        date: this.date.getTime()})
     }
   },
   watch: {
@@ -86,16 +94,6 @@ export default {
       if (!value) {
         this.$store.dispatch('setError', false)
       }
-    }
-  },
-  methods: {
-    createAd () {
-      this.date = new Date()
-      this.$store.dispatch('createAd', {title: this.title,
-        location: this.location,
-        imageUrl: this.imageUrl,
-        description: this.description,
-        date: this.date.getTime()})
     }
   }
 }
