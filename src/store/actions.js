@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import {rootRef} from '../main.js'
+import {rootRef, rootCategories} from '../main.js'
 import router from '@/router'
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -56,6 +56,33 @@ export const actions = {
       .catch((error) => {
         console.log(error)
       })
+  },
+  createCategory ({commit}, payload) {
+    const category = {
+      name: payload.name,
+      description: payload.description
+    }
+    firebase.database().ref('categories').push(category)
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    router.push('/categories')
+  },
+  getCategories ({commit}) {
+    retrieveCategoryList({commit})
+  },
+  deleteCategory ({commit}, payload) {
+    firebase.database().ref('categories').child(payload.key).remove()
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    router.push('/categories')
   }
 }
 
@@ -71,5 +98,27 @@ const retrieveAdList = ({commit}) => {
     const reformattedAdList = adList.filter(ad => ad !== null)
     // Mutate the AdList by modifying the state
     commit('setAdList', reformattedAdList)
+  })
+}
+
+const retrieveCategoryList = ({commit}) => {
+  rootCategories.orderByValue().on('value', (snapshot) => {
+    // Creates an array with length of snapshot size
+    let categoryList = new Array(Object.keys(snapshot).length)
+    // Pushes data into the array
+    snapshot.forEach(category => {
+      var data = category.val()
+      var id = category.key
+      const categoryObj = {
+        name: data.name,
+        description: data.description,
+        key: id
+      }
+      categoryList.push(categoryObj)
+    })
+    // Filter out the items that are null
+    const reformattedCategoryList = categoryList.filter(category => category !== null)
+    // Mutate the AdList by modifying the state
+    commit('setCategoryList', reformattedCategoryList)
   })
 }

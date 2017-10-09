@@ -10,5 +10,8 @@ export const mutations = {
   },
   setAdList (state, payload) {
     state.adList = payload
+  },
+  setCategoryList (state, payload) {
+    state.categoryList = payload
   }
 }
