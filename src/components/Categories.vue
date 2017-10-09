@@ -16,14 +16,16 @@
           <template v-for="category in categoryList">
             <v-divider v-bind:inset="true"></v-divider>
             <v-list-tile avatar v-bind:key="category.name" @click="">
-             <v-list-tile-action @click="deleteCategory(category.key)">
-              <v-icon color="pink">delete</v-icon>
-            </v-list-tile-action>
+              <v-list-tile-action @click="deleteCategory(category.key)">
+                <v-icon color="pink">delete</v-icon>
+              </v-list-tile-action>
               <v-list-tile-content>
                 <v-list-tile-title v-html="category.name"></v-list-tile-title>                    
-                <v-list-tile-sub-title v-html="category.description"></v-list-tile-sub-title>
+                <v-list-tile-sub-title v-html="category.description"></v-list-tile-sub-title>                
               </v-list-tile-content>
-                          
+              <v-list-tile-action @click="editCategory(category.key)">
+                <v-icon color="pink">edit</v-icon>
+              </v-list-tile-action>
             </v-list-tile>
           </template>
         </v-list>
@@ -40,6 +42,9 @@ export default {
   methods: {
     deleteCategory (key) {
       this.$store.dispatch('deleteCategory', {key: key})
+    },
+    editCategory (key) {
+      this.$store.dispatch('editCategory', {key: key})
     }
   },
   computed: {

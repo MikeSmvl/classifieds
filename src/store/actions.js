@@ -71,6 +71,15 @@ export const actions = {
       })
     router.push('/categories')
   },
+  saveCategory ({commit}, payload) {
+    const category = {
+      name: payload.name,
+      description: payload.description
+    }
+    var recordRef = firebase.database().ref('categories').child(payload.key)
+    recordRef.update(category)
+    router.push('/categories')
+  },
   getCategories ({commit}) {
     retrieveCategoryList({commit})
   },
@@ -83,6 +92,21 @@ export const actions = {
         console.log(error)
       })
     router.push('/categories')
+  },
+  editCategory ({commit}, payload) {
+    firebase.database().ref('categories').child(payload.key).once('value', (snapshot) => {
+      // Pushes data into the array
+      var data = snapshot.val()
+      var id = snapshot.key
+      const categoryObj = {
+        name: data.name,
+        description: data.description,
+        key: id
+      }
+      // Mutate the AdList by modifying the state
+      commit('setCategory', categoryObj)
+    })
+    router.push('/editCategory')
   }
 }
 
