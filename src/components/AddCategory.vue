@@ -2,7 +2,7 @@
 
 <v-layout column>
                 <v-flex xs12 class="text-xs-center" mt-5>
-                  <h3>Add a new category</h3>
+                  <h3>Add a category</h3>
                 </v-flex>
                 <v-flex xs12 sm6 offset-sm3 mt-3>
                   <form @submit.prevent="createCategory">
@@ -30,7 +30,7 @@
                           v-model="description"
                           required></v-text-field>
                       </v-flex>
-                    
+                                      
                       <v-flex class="text-xs-center" mt-5>
                         <v-btn primary type="submit" :disabled="loading">Create</v-btn>
                         <v-btn primary to="/categories">Cancel</v-btn>

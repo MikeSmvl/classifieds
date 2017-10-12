@@ -23,6 +23,7 @@ export const actions = {
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
       retrieveAdList({commit})
+      retrieveCategoryList({commit})
       commit('setLoading', false)
       commit('setError', null)
       router.push('/home')
@@ -46,7 +47,8 @@ export const actions = {
       location: payload.location,
       imageUrl: payload.imageUrl,
       description: payload.description,
-      date: payload.date
+      date: payload.date,
+      keyCategory: payload.keyCategory
     }
     firebase.database().ref('ads').push(ad)
       .then((data) => {

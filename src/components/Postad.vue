@@ -47,6 +47,18 @@
                           v-model="description"
                           required></v-text-field>
                       </v-flex>
+                      
+                      <v-flex xs6>
+			            <v-select
+			              v-bind:items="items"
+			              v-model="keyCategory"
+			              label="Select a category"
+			              class="input-group--focused"
+			              item-text="name"
+			              item-value="key"
+			            ></v-select>
+			          </v-flex>
+                      
                       <v-flex class="text-xs-center" mt-5>
                         <v-btn primary type="submit" :disabled="loading">Post ad</v-btn>
                       </v-flex>
@@ -65,7 +77,9 @@ export default {
       imageUrl: '',
       description: '',
       date: '',
-      alert: false
+      keyCategory: '',
+      alert: false,
+      items: this.$store.getters.getCategoryList
     }
   },
   computed: {
@@ -81,7 +95,8 @@ export default {
         location: this.location,
         imageUrl: this.imageUrl,
         description: this.description,
-        date: this.date.getTime()})
+        date: this.date.getTime(),
+        keyCategory: this.keyCategory})
     }
   },
   watch: {
