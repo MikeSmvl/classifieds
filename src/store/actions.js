@@ -14,7 +14,6 @@ export const actions = {
     .catch(error => {
       commit('setError', error.message)
       commit('setLoading', false)
-      commit('setError', null)
     })
   },
   userSignIn ({commit}, payload) {
