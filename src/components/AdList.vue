@@ -5,7 +5,7 @@
         <v-list two-line>
           <template v-for="ad in adList">
             <v-divider v-bind:inset="true"></v-divider>
-            <v-list-tile avatar v-bind:key="ad.location" @click="">
+            <v-list-tile avatar v-bind:key="ad.location" @click="displayAdInfo(ad.key)">
               <v-list-tile-avatar>
                 <img v-bind:src="ad.imageUrl">
               </v-list-tile-avatar>
@@ -29,6 +29,11 @@ export default {
   computed: {
     adList () {
       return this.$store.getters.getAdList
+    }
+  },
+  methods: {
+    displayAdInfo (key) {
+      this.$router.push({path: `/home/${key}`})
     }
   }
 }
