@@ -18,12 +18,22 @@
           <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
         </div>
       </v-card-title>
-    </v-flex>
-    <v-flex xs6 offset-xs1>
-        <v-btn flat color="orange">Return</v-btn>
-    </v-flex>
-    <v-flex xs6 offset-xs1>
-        <v-btn flat color="orange">Chat with seller</v-btn>
+      <v-layout row justify-center>
+        <v-flex xs6>
+          <v-card>
+            <v-card-actions>
+              <v-btn flat block color="orange" @click="">Chat with seller</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+        <v-flex xs6>
+          <v-card>
+            <v-card-actions>
+              <v-btn flat block color="orange" @click="returnToHome()">Return</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
     </v-flex>
   </v-container>
 </template>
@@ -48,6 +58,9 @@ export default {
   methods: {
     displayAdInfo (key) {
       // this.$router.push({path: `/home/${key}`})
+    },
+    returnToHome () {
+      this.$router.go(-1)
     }
   }
 }
