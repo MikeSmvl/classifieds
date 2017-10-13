@@ -14,8 +14,9 @@
     <v-flex xs10 offset-xs1>
       <v-card-title primary-title>
         <div>
-          <h3 class="headline">Kangaroo Valley Safari</h3>
-          <div>Located two hours south of Sydney in the <br>Southern Highlands of New South Wales, ...</div>
+          <h3 class="headline">{{ad.title}}</h3>
+          <div>Location: {{ad.location}}</div>
+          <div>Description: {{ad.description}}</div>
         </div>
       </v-card-title>
       <v-layout row justify-center>
@@ -55,10 +56,16 @@ export default {
       ]
     }
   },
+  computed: {
+    ad () {
+      const adList = this.$store.getters.getAdList
+      const key = this.$route.params.id
+      const findAd = (adItem) => adItem.key === key
+      const ad = adList.find(findAd)
+      return ad
+    }
+  },
   methods: {
-    displayAdInfo (key) {
-      // this.$router.push({path: `/home/${key}`})
-    },
     returnToHome () {
       this.$router.go(-1)
     }
