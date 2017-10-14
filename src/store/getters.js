@@ -16,5 +16,8 @@ export const getters = {
   },
   getCategoryList (state) {
     return state.categoryList
+  },
+  getSubCategoryList (state) {
+    return state.subCategoryList
   }
 }

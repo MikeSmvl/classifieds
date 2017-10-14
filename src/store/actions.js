@@ -1,6 +1,9 @@
 import firebase from 'firebase'
 import {rootRef} from '../main.js'
 import router from '@/router'
+
+const categoryJsonObject = require('../category.response.json')
+
 export const actions = {
   userSignUp ({commit}, payload) {
     commit('setLoading', true)
@@ -61,6 +64,19 @@ export const actions = {
   },
   getCategories ({commit}) {
     retrieveCategoryList({commit})
+  },
+  filterSubCategory ({commit}, payload) {
+    var keyCategory = payload.keyCategory
+    var subCategoryList = ''
+    for (var i = 0; i < categoryJsonObject.length; i++) {
+      var c = categoryJsonObject[i].key
+      if (c === keyCategory) {
+        if (categoryJsonObject[i].subCategories !== undefined) {
+          subCategoryList = categoryJsonObject[i].subCategories
+        }
+      }
+    }
+    commit('setSubCategoryList', subCategoryList)
   }
 }
 
@@ -80,20 +96,5 @@ const retrieveAdList = ({commit}) => {
 }
 
 const retrieveCategoryList = ({commit}) => {
-  /*
-  let categoryList = new Array(8)
-  categoryList.push({ name: 'Acheter et vendre', key: 'Acheter et vendre' })
-  categoryList.push({ name: 'Autos et véhicules', key: 'Autos et véhicules' })
-  categoryList.push({ name: 'Immobilier', key: 'Immobilier' })
-  categoryList.push({ name: 'Animaux', key: 'Animaux' })
-  categoryList.push({ name: 'Emplois', key: 'Emplois' })
-  categoryList.push({ name: 'Services', key: 'Services' })
-  categoryList.push({ name: 'Locations de vacances', key: 'Locations de vacances' })
-  categoryList.push({ name: 'Communauté', key: 'Communauté' })
-  */
-  // {"key":0,"name":"All"} f
-  // const v = '[{"key":1,"name":"Books","subCategories":[{"key":1,"name":"Hardcover"}]},{"key":2,"name":"Movies"}]'
-  var v = '[{"key":"Acheter et vendre","name":"Acheter et vendre"},{"key":"Autos et véhicules","name":"Autos et véhicules"},{"key":"Immobilier","name":"Immobilier"},{"key":"Animaux","name":"Animaux"},{"key":"Emplois","name":"Emplois"},{"key":"Services","name":"Services"},{"key":"Locations de vacances","name":"Locations de vacances"},{"key":"Communauté","name":"Communauté"}]'
-  var categoryList = JSON.parse(v)
-  commit('setCategoryList', categoryList)
+  commit('setCategoryList', categoryJsonObject)
 }

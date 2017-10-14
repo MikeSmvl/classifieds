@@ -13,5 +13,8 @@ export const mutations = {
   },
   setCategoryList (state, payload) {
     state.categoryList = payload
+  },
+  setSubCategoryList (state, payload) {
+    state.subCategoryList = payload
   }
 }

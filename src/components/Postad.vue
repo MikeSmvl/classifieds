@@ -49,7 +49,7 @@
                       </v-flex>
                       
                       <v-flex xs6>
-			            <v-select
+			            <v-select @change="onCategoryChange"
 			              v-bind:items="items"
 			              v-model="keyCategory"
 			              label="Select a category"
@@ -59,6 +59,17 @@
 			            ></v-select>
 			          </v-flex>
                       
+                      <v-flex xs6 v-if="subItems.length > 0">
+			            <v-select 
+			              v-bind:items="subItems"
+			              v-model="keySubCategory"
+			              label="Select a sub category"
+			              class="input-group--focused"
+			              item-text="name"
+			              item-value="key"
+			            ></v-select>
+			          </v-flex>
+			          
                       <v-flex class="text-xs-center" mt-5>
                         <v-btn primary type="submit" :disabled="loading">Post ad</v-btn>
                       </v-flex>
@@ -78,8 +89,10 @@ export default {
       description: '',
       date: '',
       keyCategory: '',
+      keySubCategory: '',
       alert: false,
-      items: this.$store.getters.getCategoryList
+      items: this.$store.getters.getCategoryList,
+      subItems: ''
     }
   },
   computed: {
@@ -96,7 +109,14 @@ export default {
         imageUrl: this.imageUrl,
         description: this.description,
         date: this.date.getTime(),
-        keyCategory: this.keyCategory})
+        keyCategory: this.keyCategory + ((this.keySubCategory.length > 0) ? ',' + this.keySubCategory : '')})
+    }
+  },
+  methods: {
+    onCategoryChange (value) {
+      this.$store.dispatch('filterSubCategory', {keyCategory: value})
+      this.subItems = this.$store.getters.getSubCategoryList
+      this.keySubCategory = ''
     }
   },
   watch: {

@@ -3,6 +3,7 @@ export const state = {
   user: null,
   adList: [],
   categoryList: [],
+  subCategoryList: [],
   error: null,
   loading: false
 }
