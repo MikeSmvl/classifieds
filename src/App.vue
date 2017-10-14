@@ -47,18 +47,6 @@
         </v-btn>
         <v-btn to="/signin" flat v-if="!(isAuthenticated)">Sign in</v-btn>
         <v-btn to="/signup" flat v-if="!(isAuthenticated)">Register</v-btn>
-        
-        <div class="text-xs-center">
-         <v-menu offset-y>
-	       <v-btn color="primary" dark slot="activator">Administrator</v-btn>
-	       <v-list>
-	         <v-list-tile v-for="item in adminItems" :key="item.title" :to="item.path">
-	           <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-	         </v-list-tile>
-	       </v-list>
-	     </v-menu>
-	    </div>
-        
         <v-btn to="/userProfile" flat v-if="isAuthenticated">My Profile</v-btn>
         <v-btn to="/postad" class="green accent-4" flat>Post ad</v-btn>
         <v-btn flat v-if="isAuthenticated" @click="userSignOut">

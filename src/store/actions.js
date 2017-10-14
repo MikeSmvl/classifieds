@@ -1,5 +1,5 @@
 import firebase from 'firebase'
-import {rootRef, rootCategories} from '../main.js'
+import {rootRef} from '../main.js'
 import router from '@/router'
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -59,56 +59,8 @@ export const actions = {
         console.log(error)
       })
   },
-  createCategory ({commit}, payload) {
-    const category = {
-      name: payload.name,
-      description: payload.description
-    }
-    firebase.database().ref('categories').push(category)
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    router.push('/categories')
-  },
-  saveCategory ({commit}, payload) {
-    const category = {
-      name: payload.name,
-      description: payload.description
-    }
-    var recordRef = firebase.database().ref('categories').child(payload.key)
-    recordRef.update(category)
-    router.push('/categories')
-  },
   getCategories ({commit}) {
     retrieveCategoryList({commit})
-  },
-  deleteCategory ({commit}, payload) {
-    firebase.database().ref('categories').child(payload.key).remove()
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    router.push('/categories')
-  },
-  editCategory ({commit}, payload) {
-    firebase.database().ref('categories').child(payload.key).once('value', (snapshot) => {
-      // Pushes data into the array
-      var data = snapshot.val()
-      var id = snapshot.key
-      const categoryObj = {
-        name: data.name,
-        description: data.description,
-        key: id
-      }
-      // Mutate the AdList by modifying the state
-      commit('setCategory', categoryObj)
-    })
-    router.push('/editCategory')
   }
 }
 
@@ -128,23 +80,20 @@ const retrieveAdList = ({commit}) => {
 }
 
 const retrieveCategoryList = ({commit}) => {
-  rootCategories.orderByValue().on('value', (snapshot) => {
-    // Creates an array with length of snapshot size
-    let categoryList = new Array(Object.keys(snapshot).length)
-    // Pushes data into the array
-    snapshot.forEach(category => {
-      var data = category.val()
-      var id = category.key
-      const categoryObj = {
-        name: data.name,
-        description: data.description,
-        key: id
-      }
-      categoryList.push(categoryObj)
-    })
-    // Filter out the items that are null
-    const reformattedCategoryList = categoryList.filter(category => category !== null)
-    // Mutate the AdList by modifying the state
-    commit('setCategoryList', reformattedCategoryList)
-  })
+  /*
+  let categoryList = new Array(8)
+  categoryList.push({ name: 'Acheter et vendre', key: 'Acheter et vendre' })
+  categoryList.push({ name: 'Autos et véhicules', key: 'Autos et véhicules' })
+  categoryList.push({ name: 'Immobilier', key: 'Immobilier' })
+  categoryList.push({ name: 'Animaux', key: 'Animaux' })
+  categoryList.push({ name: 'Emplois', key: 'Emplois' })
+  categoryList.push({ name: 'Services', key: 'Services' })
+  categoryList.push({ name: 'Locations de vacances', key: 'Locations de vacances' })
+  categoryList.push({ name: 'Communauté', key: 'Communauté' })
+  */
+  // {"key":0,"name":"All"} f
+  // const v = '[{"key":1,"name":"Books","subCategories":[{"key":1,"name":"Hardcover"}]},{"key":2,"name":"Movies"}]'
+  var v = '[{"key":"Acheter et vendre","name":"Acheter et vendre"},{"key":"Autos et véhicules","name":"Autos et véhicules"},{"key":"Immobilier","name":"Immobilier"},{"key":"Animaux","name":"Animaux"},{"key":"Emplois","name":"Emplois"},{"key":"Services","name":"Services"},{"key":"Locations de vacances","name":"Locations de vacances"},{"key":"Communauté","name":"Communauté"}]'
+  var categoryList = JSON.parse(v)
+  commit('setCategoryList', categoryList)
 }
