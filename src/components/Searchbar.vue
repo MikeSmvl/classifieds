@@ -28,6 +28,8 @@ export default {
   data () {
     return {
       items: this.$store.getters.getCategoryList,
+      keyCategory: '',
+      keySubCategory: '',
       subItems: ''
     }
   },
