@@ -11,7 +11,7 @@ const routerOptions = [
   { path: '/userProfile', component: 'UserProfile', meta: { requiresAuth: true } },
   { path: '/categories', component: 'Categories', meta: { requiresAuth: true } },
   { path: '/addCategory', component: 'AddCategory', meta: { requiresAuth: true } },
-  { path: '/editCategory', component: 'EditCategory', meta: { requiresAuth: true } }
+  { path: '/editCategory', component: 'EditCategory', meta: { requiresAuth: true } },
   { path: '/home/:id', component: 'AdPage', meta: { requiresAuth: true } }
 ]
 
