@@ -64,7 +64,6 @@ export const actions = {
     firebase.database().ref('ads').orderByChild('title').startAt().endAt(input.searchInput + '\uf8ff')
       .once('value').then(function (snapshot) {
         router.push('/searchresults').then(function () {
-          
         })
       }
     )
