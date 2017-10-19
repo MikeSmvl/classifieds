@@ -17,7 +17,6 @@ export const actions = {
     .catch(error => {
       commit('setError', error.message)
       commit('setLoading', false)
-      commit('setError', null)
     })
   },
   userSignIn ({commit}, payload) {
@@ -86,7 +85,14 @@ const retrieveAdList = ({commit}) => {
     let adList = new Array(Object.keys(snapshot).length)
     // Pushes data into the array
     snapshot.forEach(ad => {
-      adList.push(ad.val())
+      adList.push({
+        date: ad.val().date,
+        description: ad.val().description,
+        imageUrl: ad.val().imageUrl,
+        location: ad.val().location,
+        title: ad.val().title,
+        key: ad.key
+      })
     })
     // Filter out the items that are null
     const reformattedAdList = adList.filter(ad => ad !== null)

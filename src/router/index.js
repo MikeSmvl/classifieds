@@ -12,6 +12,7 @@ const routerOptions = [
   { path: '/categories', component: 'Categories', meta: { requiresAuth: true } },
   { path: '/addCategory', component: 'AddCategory', meta: { requiresAuth: true } },
   { path: '/editCategory', component: 'EditCategory', meta: { requiresAuth: true } }
+  { path: '/home/:id', component: 'AdPage', meta: { requiresAuth: true } }
 ]
 
 const routes = routerOptions.map(route => {
