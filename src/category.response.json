@@ -1,0 +1,216 @@
+[
+  {
+    "key":"",
+    "name":"-- -- -- -- -- --"
+  },
+  {
+    "key":"Buy & Sell",
+    "name":"Buy & Sell",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Arts & Collectibles",
+        "name":"Arts & Collectibles"
+      },
+      {
+        "key":"Audio",
+        "name":"Audio"
+      },
+      {
+        "key":"Baby Items",
+        "name":"Baby Items"
+      },
+      {
+        "key":"Bikes",
+        "name":"Bikes"
+      },
+      {
+        "key":"Books",
+        "name":"Books"
+      }
+    ]
+  },
+  {
+    "key":"Cars & Vehicles",
+    "name":"Cars & Vehicles",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Cars & Trucks",
+        "name":"Cars & Trucks"
+      },
+      {
+        "key":"SUVs / trucks / vans",
+        "name":"SUVs / trucks / vans"
+      },
+      {
+        "key":"Classic Cars",
+        "name":"Classic Cars"
+      },
+      {
+        "key":"Auto Parts & Tires",
+        "name":"Auto Parts & Tires"
+      },
+      {
+        "key":"Automotive Services",
+        "name":"Automotive Services"
+      }
+    ]
+  },
+  {
+    "key":"Real Estate",
+    "name":"Real Estate",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Apartments & Condos for Rent",
+        "name":"Apartments & Condos for Rent"
+      },
+      {
+        "key":"House Rental",
+        "name":"House Rental"
+      },
+      {
+        "key":"Room Rentals & Roommates",
+        "name":"Room Rentals & Roommates"
+      },
+      {
+        "key":"Short Term Rentals",
+        "name":"Short Term Rentals"
+      },
+      {
+        "key":"Commercial & Office Space for Rent",
+        "name":"Commercial & Office Space for Rent"
+      }
+    ]
+  },
+  {
+    "key":"Pets",
+    "name":"Pets",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Animal & Pet Services",
+        "name":"Animal & Pet Services"
+      },
+      {
+        "key":"Birds for Rehoming",
+        "name":"Birds for Rehoming"
+      },
+      {
+        "key":"Cats & Kittens for Rehoming",
+        "name":"Cats & Kittens for Rehoming"
+      },
+      {
+        "key":"Dogs & Puppies for Rehoming",
+        "name":"Dogs & Puppies for Rehoming"
+      },
+      {
+        "key":"Equestrian & Livestock Accessories",
+        "name":"Equestrian & Livestock Accessories"
+      }
+    ]
+  },
+  {
+    "key":"Jobs",
+    "name":"Jobs",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Accounting & Management",
+        "name":"Accounting & Management"
+      },
+      {
+        "key":"Child Care",
+        "name":"Child Care"
+      },
+      {
+        "key":"Bar, Food & Hospitality",
+        "name":"Bar, Food & Hospitality"
+      },
+      {
+        "key":"Cleaning & Housekeeping",
+        "name":"Cleaning & Housekeeping"
+      },
+      {
+        "key":"Construction & Trades",
+        "name":"Construction & Trades"
+      }
+    ]
+  },
+  {
+    "key":"Services",
+    "name":"Services",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Childcare & Nanny",
+        "name":"Childcare & Nanny"
+      },
+      {
+        "key":"Cleaners & Cleaning",
+        "name":"Cleaners & Cleaning"
+      },
+      {
+        "key":"Entertainment",
+        "name":"Entertainment"
+      },
+      {
+        "key":"Financial & Legal",
+        "name":"Financial & Legal"
+      },
+      {
+        "key":"Fitness & Personal Trainer",
+        "name":"Fitness & Personal Trainer"
+      }
+    ]
+  },
+  {
+    "key":"Community",
+    "name":"Community",
+    "subCategories":[
+      {
+        "key":"",
+        "name":"-- -- -- -- -- --"
+      },
+      {
+        "key":"Activities & Groups",
+        "name":"Activities & Groups"
+      },
+      {
+        "key":"Artists & Musicians",
+        "name":"Artists & Musicians"
+      },
+      {
+        "key":"Classes & Lessons",
+        "name":"Classes & Lessons"
+      },
+      {
+        "key":"Events",
+        "name":"Events"
+      },
+      {
+        "key":"Friendship & Networking",
+        "name":"Friendship & Networking"
+      }
+    ]
+  }
+]

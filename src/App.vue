@@ -101,7 +101,10 @@
              { title: 'Sign In', path: '/signin', icon: 'lock_open' }
             ]
           }
-        }
+        },
+        adminItems: [
+          { title: 'Categories', path: '/categories' }
+        ]
       }
     },
     computed: {
