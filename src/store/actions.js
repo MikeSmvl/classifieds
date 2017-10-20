@@ -87,7 +87,14 @@ export const actions = {
         let searchList = new Array(Object.keys(snapshot).length)
         // Pushes data into the array
         snapshot.forEach(ad => {
-          searchList.push(ad.val())
+          searchList.push({
+            date: ad.val().date,
+            description: ad.val().description,
+            imageUrl: ad.val().imageUrl,
+            location: ad.val().location,
+            title: ad.val().title,
+            key: ad.key
+          })
         })
         // Filter out the items that are null
         const reformattedSearchList = searchList.filter(ad => ad !== null)
