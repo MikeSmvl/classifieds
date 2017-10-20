@@ -13,5 +13,8 @@ export const getters = {
   },
   getAdList (state) {
     return state.adList
+  },
+  getTmpAdList (state) {
+    return state.tmpAdList
   }
 }

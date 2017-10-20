@@ -55,6 +55,12 @@ export const actions = {
       .catch((error) => {
         console.log(error)
       })
+  },
+  search ({commit}, payload) {
+    const {searchInput, adList} = payload
+    const lowerCaseInput = searchInput.toLowerCase()
+    const filteredAdList = adList.filter((ad) => { ad.title.toLowerCase().includes(lowerCaseInput) })
+    commit('setTmpAdList', filteredAdList)
   }
 }
 
@@ -70,5 +76,6 @@ const retrieveAdList = ({commit}) => {
     const reformattedAdList = adList.filter(ad => ad !== null)
     // Mutate the AdList by modifying the state
     commit('setAdList', reformattedAdList)
+    commit('setTmpAdList', reformattedAdList)
   })
 }
