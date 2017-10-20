@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="inspire" dark>
 
 
     <v-navigation-drawer temporary v-model="sidebar">
@@ -24,13 +24,16 @@
     </v-navigation-drawer>
 
 
-    <v-toolbar dense dark class="light-blue darken-1">
+    <v-toolbar fixed dense dark class="grey darken-4">
       <span class="hidden-sm-and-up">
         <v-toolbar-side-icon @click.stop="sidebar = !sidebar">
         </v-toolbar-side-icon>
       </span>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">
+        <router-link to="/" v-if="!(isAuthenticated)" tag="span" style="cursor: pointer">
+          {{appTitle}}
+        </router-link>
+        <router-link to="/home" v-if="isAuthenticated" tag="span" style="cursor: pointer">
           {{appTitle}}
         </router-link>
       </v-toolbar-title>
@@ -45,7 +48,7 @@
         <v-btn to="/signin" flat v-if="!(isAuthenticated)">Sign in</v-btn>
         <v-btn to="/signup" flat v-if="!(isAuthenticated)">Register</v-btn>
         <v-btn to="/userProfile" flat v-if="isAuthenticated">My Profile</v-btn>
-        <v-btn to="/postad" class="green accent-4" flat>Post ad</v-btn>
+        <v-btn to="/postad" class="green accent-4" flat v-if="isAuthenticated">Post ad</v-btn>
         <v-btn flat v-if="isAuthenticated" @click="userSignOut">
           <v-icon left>exit_to_app</v-icon>
             Sign Out
@@ -56,15 +59,16 @@
     <main>
       <v-container fluid>
         <router-view>
-
         </router-view>
       </v-container>
     </main>
 
-
+    <v-footer fixed prominent class="grey darken-4">
+      <v-spacer></v-spacer>
+      <div>© {{ new Date().getFullYear() }}</div>
+    </v-footer>
   </v-app>
 </template>
-
 
 <script>
   import VListTile from 'vuetify/src/components/VList/VListTile'
@@ -98,7 +102,10 @@
              { title: 'Sign In', path: '/signin', icon: 'lock_open' }
             ]
           }
-        }
+        },
+        adminItems: [
+          { title: 'Categories', path: '/categories' }
+        ]
       }
     },
     computed: {
@@ -117,7 +124,6 @@
   }
 
 </script>
-
 
 <style lang="stylus">
   @import './stylus/main'

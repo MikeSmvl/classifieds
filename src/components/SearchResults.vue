@@ -1,9 +1,11 @@
 <template>
-  <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
-      <v-card>
-        <v-list two-line>
-          <template v-for="ad in adList">
+  <v-layout column>
+    <searchbar></searchbar>
+    <v-layout row justify-center mt-3>
+      <v-flex xs12 sm6>
+        <v-card class="pa-5">
+          <h6>Search Results</h6>
+          <template v-for="ad in searchList">
             <v-divider v-bind:inset="true"></v-divider>
             <v-list-tile avatar v-bind:key="ad.location" @click="displayAdInfo(ad.key)">
               <v-list-tile-avatar>
@@ -15,25 +17,30 @@
               </v-list-tile-content>
             </v-list-tile>
           </template>
-        </v-list>
-      </v-card>
-    </v-flex>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
 <script>
-export default {
+import Searchbar from '../components/Searchbar.vue'
+export default
+{
+  components: {
+    Searchbar
+  },
   data () {
     return {}
   },
   computed: {
-    adList () {
-      return this.$store.getters.getAdList
+    searchList () {
+      return this.$store.getters.getSearchList
     }
   },
   methods: {
     displayAdInfo (key) {
-      this.$router.push({path: `/home/${key}`})
+      this.$router.push({path: `/searchresults/${key}`})
     }
   }
 }

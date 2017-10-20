@@ -10,5 +10,14 @@ export const mutations = {
   },
   setAdList (state, payload) {
     state.adList = payload
+  },
+  setCategoryList (state, payload) {
+    state.categoryList = payload
+  },
+  setSubCategoryList (state, payload) {
+    state.subCategoryList = payload
+  },
+  setSearchList (state, payload) {
+    state.searchList = payload
   }
 }
