@@ -2,7 +2,7 @@
     <v-layout row justify-center mb-0>
         <v-flex sm6 mt-5>
             <v-card class="pl-5 pr-5 pt-1 pb-4">
-                <v-text-field label="Search..." single-line append-icon="search" light hide-details></v-text-field>
+                <v-text-field @keyup.enter.native="search" v-model="value" label="Search..." single-line append-icon="search" light hide-details></v-text-field>
                 <v-select @change="onCategoryChange"
 	              v-bind:items="items"
 	              v-model="keyCategory"
@@ -30,7 +30,8 @@ export default {
       items: this.$store.getters.getCategoryList,
       keyCategory: '',
       keySubCategory: '',
-      subItems: ''
+      subItems: '',
+      searchInput: ''
     }
   },
   methods: {
@@ -38,6 +39,9 @@ export default {
       this.$store.dispatch('filterSubCategory', {keyCategory: value})
       this.subItems = this.$store.getters.getSubCategoryList
       this.keySubCategory = ''
+    },
+    search () {
+      this.$store.dispatch('search', {searchInput: this.value})
     }
   }
 }

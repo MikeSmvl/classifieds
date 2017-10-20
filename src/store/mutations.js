@@ -16,5 +16,8 @@ export const mutations = {
   },
   setSubCategoryList (state, payload) {
     state.subCategoryList = payload
+  },
+  setSearchList (state, payload) {
+    state.searchList = payload
   }
 }
