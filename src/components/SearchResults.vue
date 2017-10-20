@@ -14,7 +14,7 @@
       <v-flex xs12 sm6 ml-2>
         <v-card class="pa-5">
           <h6>Search Results</h6>
-          <template v-for="ad in adList">
+          <template v-for="ad in searchList">
             <v-divider v-bind:inset="true"></v-divider>
             <v-list-tile avatar v-bind:key="ad.location" @click="">
               <v-list-tile-avatar>
@@ -43,8 +43,8 @@
       return {}
     },
     computed: {
-      adList () {
-        return this.$store.getters.getAdList
+      searchList () {
+        return this.$store.getters.getSearchList
       }
     }
   }

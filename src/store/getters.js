@@ -13,5 +13,8 @@ export const getters = {
   },
   getAdList (state) {
     return state.adList
+  },
+  getSearchList (state) {
+    return state.searchList
   }
 }
