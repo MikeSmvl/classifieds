@@ -22,6 +22,16 @@
               <v-list-tile-title>{{getUser.uid}}</v-list-tile-title>
               <v-list-tile-sub-title>UID</v-list-tile-sub-title>
             </v-list-tile-content>
+          </v-list-tile>
+          <v-divider inset></v-divider>
+          <v-list-tile @click="">
+            <v-list-tile-action>
+              <v-icon>mail</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>{{getUser.email}}</v-list-tile-title>
+              <v-list-tile-sub-title>Personal</v-list-tile-sub-title>
+            </v-list-tile-content>
             <v-list-tile-action>
               <v-icon dark>chat</v-icon>
             </v-list-tile-action>
@@ -29,21 +39,11 @@
           <v-divider inset></v-divider>
           <v-list-tile @click="">
             <v-list-tile-action>
-              <v-icon class="indigo--text">mail</v-icon>
+              <v-icon>location_on</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>{{getUser.email}}</v-list-tile-title>
-              <v-list-tile-sub-title>Personal</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider inset></v-divider>
-          <v-list-tile @click="">
-            <v-list-tile-action>
-              <v-icon class="indigo--text">location_on</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>1400 Main Street</v-list-tile-title>
-              <v-list-tile-sub-title>Orlando, FL 79938</v-list-tile-sub-title>
+              <v-list-tile-title>451 Avenue de Capri</v-list-tile-title>
+              <v-list-tile-sub-title>Montreal, QC</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
