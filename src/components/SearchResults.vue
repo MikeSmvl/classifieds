@@ -2,11 +2,12 @@
   <v-layout column>
     <searchbar></searchbar>
     <v-layout row justify-center mt-3>
-      <v-flex xs12 sm6>
+      <v-flex xs12 sm8>
         <v-card class="pa-5">
           <h6>Search Results</h6>
+          <v-list>
           <template v-for="ad in searchList">
-            <v-divider v-bind:inset="true"></v-divider>
+            <v-divider></v-divider>
             <v-list-tile avatar v-bind:key="ad.location" @click="displayAdInfo(ad.key)">
               <v-list-tile-avatar>
                 <img v-bind:src="ad.imageUrl">
@@ -17,6 +18,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </template>
+          </v-list>
         </v-card>
       </v-flex>
     </v-layout>
