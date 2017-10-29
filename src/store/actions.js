@@ -61,9 +61,6 @@ export const actions = {
         console.log(error)
       })
   },
-  getCategories ({commit}) {
-    retrieveCategoryList({commit})
-  },
   filterSubCategory ({commit}, payload) {
     var keyCategory = payload.keyCategory
     var subCategoryList = ''
