@@ -27,7 +27,8 @@
                   id="title"
                   type="title"
                   v-model="title"
-                  required></v-text-field>
+                  required
+                  :rules="[rules.pattern]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -36,7 +37,8 @@
                   id="location"
                   type="location"
                   v-model="location"
-                  required></v-text-field>
+                  required
+                  :rules="[rules.pattern]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -45,7 +47,8 @@
                   id="imageUrl"
                   type="imageUrl"
                   v-model="imageUrl"
-                  required></v-text-field>
+                  required
+                  :rules="[rules.image]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -55,7 +58,8 @@
                   type="description"
                   v-model="description"
                   multi-line
-                  required></v-text-field>
+                  required
+                  :rules="[rules.pattern]"></v-text-field>
               </v-flex>
 
               <v-flex xs6>
@@ -106,7 +110,17 @@
         keySubCategory: '',
         alert: false,
         items: this.$store.getters.getCategoryList,
-        subItems: ''
+        subItems: '',
+        rules: {
+          pattern: (value) => {
+            const pattern = /^[a-zA-Z0-9\s]+$/
+            return pattern.test(value) || 'No special characters allowed'
+          },
+          image: (value) => {
+            const pattern = /^[^<>;]+$/
+            return pattern.test(value) || 'Not a valid link'
+          }
+        }
       }
     },
     computed: {
