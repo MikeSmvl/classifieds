@@ -48,15 +48,20 @@
           </v-list-tile>
         </v-list>
       </v-card>
+      <ownerAds></ownerAds>
     </v-flex>
   </v-layout>
 </template>
 <script>
-  export default {
-    computed: {
-      getUser () {
-        return this.$store.getters.getUser
-      }
+import OwnerAds from './OwnerAds.vue'
+export default {
+  computed: {
+    getUser () {
+      return this.$store.getters.getUser
     }
+  },
+  components: {
+    'ownerAds': OwnerAds
   }
+}
 </script>
