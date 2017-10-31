@@ -15,7 +15,7 @@ const assert = chai.assert
 
 describe('User component', () => {
 
-  it('SignUp user with valid email and valid password', (done) => {
+  it('SignUp dummy user with valid email and valid password', (done) => {
     userActions.signUp({ email: 'mocha.testing@gmail.com', password: 'testing' })
     .then(firebaseUser => {
       expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
@@ -23,7 +23,7 @@ describe('User component', () => {
     })
   })
 
-  it('SignIn user with valid email and valid password', (done) => {
+  it('SignIn dummy user with valid email and valid password', (done) => {
     userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'testing' })
     .then(firebaseUser => {
       expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
@@ -31,7 +31,7 @@ describe('User component', () => {
     })
   })
 
-  it('SignOut previously authenticated user', (done) => {
+  it('SignOut previously authenticated dummy user', (done) => {
     userActions.signOut()
     .then(firebaseUser => {
       expect(firebaseUser).to.be.undefined

@@ -16,6 +16,7 @@ const assert = chai.assert
 
 
 describe('Ad component', () => {
+  /*
   it('Creating ad with valid information', (done) => {
     userActions.signIn({ email: 'mocha.testing2@hotmail.com', password: 'testing' })
     .then(firebaseUser => {
@@ -36,6 +37,7 @@ describe('Ad component', () => {
     })
   })
   })
+  */
 /*
   it('Retrieve all ads', (done) => {
     var x
