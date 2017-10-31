@@ -1,5 +1,6 @@
 import firebase from 'firebase'
 import {adActions} from '../../src/store/actions.ad'
+import {userActions} from '../../src/store/actions.user'
 import { firebaseConfig } from '../../src/config'
 
 if (firebase.apps.length === 0) {
@@ -13,14 +14,16 @@ chai.use(chaiAsPromised)
 const expect = chai.expect
 const assert = chai.assert
 
+
 describe('Ad component', () => {
-/*
   it('Creating ad with valid information', (done) => {
-    adActions.createAd({
-      title: 'Ball',
+    userActions.signIn({ email: 'mocha.testing2@hotmail.com', password: 'testing' })
+    .then(firebaseUser => {
+      adActions.createAd({
+      title: 'Tesla',
       location: 'Montreal',
       imageUrl: 'C:/loadpicture.jpg',
-      description: 'This is my description',
+      description: 'This is my new car',
       date: '2017/10/25',
       keyCategory: 'Vehicles'
     })
@@ -32,7 +35,7 @@ describe('Ad component', () => {
       console.log(error)
     })
   })
-*/
+  })
 /*
   it('Retrieve all ads', (done) => {
     var x
@@ -41,21 +44,22 @@ describe('Ad component', () => {
     //expect(adList).to.not.be.empty
   })
 */
-  /*
+/*
   it('Deleting ad with valid information', (done) => {
+    userActions.signIn({ email: 'ruthvikshandilya19@gmail.com', password: 'abc12345' })
+    .then(firebaseUser => {
     adActions.createAd({
-      title: 'Ball',
+      title: 'swift',
       location: 'Montreal',
       imageUrl: 'C:/loadpicture.jpg',
-      description: 'This is my description',
+      description: 'This is my present car',
       date: '2017/10/25',
       keyCategory: 'Vehicles'
     })
     .then(o => {
-      console.log('Done')
       adActions.removeAd(o)
       .then(oi => {
-        expect(oi).to.be.undefined
+        expect(oi).to.be.empty
         done()
       })
     })
@@ -63,5 +67,5 @@ describe('Ad component', () => {
       console.log(error)
     })
   })
-  */
+*/
 })
