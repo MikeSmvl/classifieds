@@ -2,8 +2,7 @@ import firebase from 'firebase'
 import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
-
-const categoryJsonObject = require('../category.response.json')
+import {categoryActions} from './actions.category'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -26,7 +25,7 @@ export const actions = {
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
       retrieveAdList({commit})
-      retrieveCategoryList({commit})
+      commit('setCategoryList', categoryActions.getList())
       commit('setLoading', false)
       commit('setError', null)
       router.push('/home')
@@ -63,20 +62,10 @@ export const actions = {
       })
   },
   getCategories ({commit}) {
-    retrieveCategoryList({commit})
+    commit('setCategoryList', categoryActions.getList())
   },
   filterSubCategory ({commit}, payload) {
-    var keyCategory = payload.keyCategory
-    var subCategoryList = ''
-    for (var i = 0; i < categoryJsonObject.length; i++) {
-      var c = categoryJsonObject[i].key
-      if (c === keyCategory) {
-        if (categoryJsonObject[i].subCategories !== undefined) {
-          subCategoryList = categoryJsonObject[i].subCategories
-        }
-      }
-    }
-    commit('setSubCategoryList', subCategoryList)
+    commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
   search ({ commit }, payload) {
     const input = {
@@ -127,8 +116,4 @@ const retrieveAdList = ({commit}) => {
     // Mutate the AdList by modifying the state
     commit('setAdList', reformattedAdList)
   })
-}
-
-const retrieveCategoryList = ({commit}) => {
-  commit('setCategoryList', categoryJsonObject)
 }
