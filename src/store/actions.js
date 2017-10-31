@@ -1,13 +1,14 @@
 import firebase from 'firebase'
 import {rootRef} from '../main.js'
 import router from '@/router'
+import {userActions} from './actions.user'
 
 const categoryJsonObject = require('../category.response.json')
 
 export const actions = {
   userSignUp ({commit}, payload) {
     commit('setLoading', true)
-    firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+    userActions.signUp({ email: payload.email, password: payload.password })
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
       retrieveAdList({commit})
@@ -21,7 +22,7 @@ export const actions = {
   },
   userSignIn ({commit}, payload) {
     commit('setLoading', true)
-    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+    userActions.signIn({ email: payload.email, password: payload.password })
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
       retrieveAdList({commit})
@@ -39,7 +40,7 @@ export const actions = {
     commit('setUser', payload)
   },
   userSignOut ({commit}) {
-    firebase.auth().signOut()
+    userActions.signOut()
     commit('setUser', null)
     router.push('/')
   },

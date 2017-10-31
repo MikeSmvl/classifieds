@@ -9,7 +9,7 @@
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "mocha --compilers js:babel-register test/**/action2.spec.js --recursive"
+    "test": "mocha --compilers js:babel-register test/**/action.spec.js --recursive"
   },
   "dependencies": {
     "child_process": "^1.0.2",

@@ -1,27 +1,51 @@
 import firebase from 'firebase'
+import {userActions} from '../../src/store/actions.user'
 import { firebaseConfig } from '../../src/config'
+
+firebase.initializeApp(firebaseConfig)
+
 const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+chai.use(chaiAsPromised)
+
 const expect = chai.expect
 const assert = chai.assert
 
-describe('This unit test is for demo.', () => {
-  it('is true', () => {
-    expect(true).to.equal(true)
-  })
-})
+describe('User component', () => {
 
-describe('signInWithEmailAndPassword.', () => {
-  it('is true', () => {
-    //  const actions = require('../../src/store/actions')
-    firebase.initializeApp(firebaseConfig)
-    firebase.auth().signInWithEmailAndPassword('cvashwin@hotmail.com', 'testing')
+  it('SignUp user with valid email and valid password', (done) => {
+    userActions.signUp({ email: 'mocha.testing@gmail.com', password: 'testing' })
     .then(firebaseUser => {
-      console.log(firebaseUser.email)
-      assert.equal(firebaseUser.email, 'cvashwin@hotmail.com', 'Email is equal to')
-    })
-    .catch(error => {
-      // expect(true).to.equal(true)
-      console.log(error.message)
+      expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
+      done()
     })
   })
+
+  it('SignIn user with valid email and valid password', (done) => {
+    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'testing' })
+    .then(firebaseUser => {
+      expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
+      done()
+    })
+  })
+
+  it('SignOut previously authenticated user', (done) => {
+    userActions.signOut()
+    .then(firebaseUser => {
+      expect(firebaseUser).to.be.undefined
+      done()
+    })
+  })
+
+  it('Deleting dummy user account', (done) => {
+    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'testing' })
+    .then(firebaseUser => {
+      userActions.deleteUser(firebaseUser)
+      .then(o => {
+        expect(o).to.be.undefined
+        done()
+      })
+    })
+  })
+
 })

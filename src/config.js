@@ -1,6 +1,6 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyA5jOPhupaW_aSnm4heRUNo5CPV0j5fLXk',
-  authDomain: 'classifieds341.firebaseapp.com',
-  databaseURL: 'https://classifieds341.firebaseio.com',
-  projectId: 'classifieds341'
+  apiKey: 'AIzaSyBWFXACKbORFpJrbwkAU4kPAqiEYye5joo',
+  authDomain: 'classifiedsandbox.firebaseapp.com',
+  databaseURL: 'https://classifiedsandbox.firebaseio.com',
+  projectId: 'classifiedsandbox'
 }
