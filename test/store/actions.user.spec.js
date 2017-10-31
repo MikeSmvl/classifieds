@@ -2,7 +2,9 @@ import firebase from 'firebase'
 import {userActions} from '../../src/store/actions.user'
 import { firebaseConfig } from '../../src/config'
 
-firebase.initializeApp(firebaseConfig)
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig)
+}
 
 const chai = require('chai')
 const chaiAsPromised = require('chai-as-promised')
