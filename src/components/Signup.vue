@@ -1,5 +1,5 @@
 <template>
-  
+
     <v-layout row justify-center>
       <v-flex xs12 sm5 mr-2>
         <v-card class="pa-5">
@@ -17,7 +17,7 @@
                   id="email"
                   type="email"
           v-model="email"
-                  required></v-text-field>
+                  :rules="[rules.emailLength, rules.emailValidation]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -26,7 +26,7 @@
                   id="password"
                   type="password"
           v-model="password"
-                  required></v-text-field>
+                  :rules="[rules.passwordLength, rules.passwordValidation]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -66,7 +66,19 @@ export default {
       email: '',
       password: '',
       passwordConfirm: '',
-      alert: false
+      alert: false,
+      rules: {
+        emailLength: (input) => (input.length > 5 && input.length <= 30) || 'Please use between 6 and 30 characters',
+        passwordLength: (input) => input.length >= 8 || 'minimum 8 characters',
+        emailValidation: (input) => {
+          const pattern = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+          return pattern.test(input) || 'Invalid email'
+        },
+        passwordValidation: (input) => {
+          const pattern = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/
+          return pattern.test(input) || 'invalid password, Minimum 8 characters, one uppercase, one lowercase, one number and one special character'
+        }
+      }
     }
   },
   computed: {
