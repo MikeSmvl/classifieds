@@ -56,7 +56,7 @@
                   :counter="250"
                   v-model="description"
                   multi-line
-                  :rules="[rules.required, rules.length, rules.pattern]"></v-text-field>
+                  :rules="[rules.required, rules.length2, rules.pattern]"></v-text-field>
               </v-flex>
 
               <v-flex xs6>
