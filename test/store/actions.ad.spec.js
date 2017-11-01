@@ -19,7 +19,7 @@ const assert = chai.assert
 describe('Ad component', () => {
 
   it('Creating dummy ad with valid information', () => {
-    userActions.signIn({ email: 'ruthvikshandilya19@gmail.com', password: 'abc12345' })
+    userActions.signIn({ email: 'ruthvikshandilya19@gmail.com', password: 'abcDEF1@' })
     .then((firebaseUser) => {
       const result = adActions.createAd({
       title: 'lancer',
