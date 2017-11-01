@@ -65,7 +65,7 @@
 
     <v-footer fixed prominent class="grey darken-4">
       <v-spacer></v-spacer>
-      <div>© {{ new Date().getFullYear() }}</div>
+      <div>CrashCode © {{ new Date().getFullYear() }}</div>
     </v-footer>
   </v-app>
 </template>
