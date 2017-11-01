@@ -26,7 +26,7 @@
                   type="password"
                   v-on:input="emitValue($event.target.value)"
                   v-model="password"
-                  class="class"    
+                  class="class"
                   v-bind:placeholder="placeholder"
                   :rules="[rules.passwordLength, rules.passwordValidation]"></v-text-field>
               </v-flex>
@@ -50,7 +50,7 @@
               </v-flex>
               <v-flex class="text-xs-center" mt-5>
                 <v-btn primary type="submit" :disabled="loading" >Register</v-btn>
-              </v-flex>            
+              </v-flex>
           </form>
         </v-card>
       </v-flex>
@@ -127,7 +127,17 @@ export default {
   },
   computed: {
     passwordStrength () {
-      return this.password ? zxcvbn(this.password).score : null
+      if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{10,}/.test(this.password)) {
+        return '4'
+      } if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/.test(this.password)) {
+        return '3'
+      } if(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(this.password)) {
+        return '2'
+      } if(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/.test(this.password)) {
+        return '1'
+      } if(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(this.password)) {
+        return '0'
+      }
     },
     isSecure () {
       return this.password ? this.password.length >= this.secureLength : null
