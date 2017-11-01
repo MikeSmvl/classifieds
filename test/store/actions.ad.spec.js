@@ -1,7 +1,9 @@
 import firebase from 'firebase'
-import {adActions} from '../../src/store/actions.ad'
-import {userActions} from '../../src/store/actions.user'
+import { adActions } from '../../src/store/actions.ad'
+import { userActions } from '../../src/store/actions.user'
+import { mutations } from '../../src/store/mutations'
 import { firebaseConfig } from '../../src/config'
+
 
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
@@ -14,12 +16,9 @@ chai.use(chaiAsPromised)
 const expect = chai.expect
 const assert = chai.assert
 
-
 describe('Ad component', () => {
-  /*
-  it('Creating ad with valid information', (done) => {
-    userActions.signIn({ email: 'mocha.testing2@hotmail.com', password: 'testing' })
-    .then(firebaseUser => {
+
+  it('Creating dummy ad with valid information', (done) => {
       adActions.createAd({
       title: 'Tesla',
       location: 'Montreal',
@@ -29,45 +28,13 @@ describe('Ad component', () => {
       keyCategory: 'Vehicles'
     })
     .then(o => {
-      expect(o.key).to.be.not.null
+      expect(o.key).to.not.be.null
       done()
     })
-    .catch((error) => {
-      console.log(error)
-    })
   })
+
+  it('Removing dummy ad using title', () => {
+    adActions.removeAd({ title: 'Tesla' })
   })
-  */
-/*
-  it('Retrieve all ads', (done) => {
-    var x
-    adActions.findAll(x)
-    console.log(x);
-    //expect(adList).to.not.be.empty
-  })
-*/
-/*
-  it('Deleting ad with valid information', (done) => {
-    userActions.signIn({ email: 'ruthvikshandilya19@gmail.com', password: 'abc12345' })
-    .then(firebaseUser => {
-    adActions.createAd({
-      title: 'swift',
-      location: 'Montreal',
-      imageUrl: 'C:/loadpicture.jpg',
-      description: 'This is my present car',
-      date: '2017/10/25',
-      keyCategory: 'Vehicles'
-    })
-    .then(o => {
-      adActions.removeAd(o)
-      .then(oi => {
-        expect(oi).to.be.empty
-        done()
-      })
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-  })
-*/
+
 })

@@ -3,6 +3,7 @@ import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
 import {categoryActions} from './actions.category'
+import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -44,15 +45,7 @@ export const actions = {
     router.push('/')
   },
   createAd ({commit}, payload) {
-    const ad = {
-      title: payload.title,
-      location: payload.location,
-      imageUrl: payload.imageUrl,
-      description: payload.description,
-      date: payload.date,
-      keyCategory: payload.keyCategory
-    }
-    firebase.database().ref('ads').push(ad)
+    adActions.createAd(payload)
       .then((data) => {
         alert('Ad Created')
         console.log(data)
