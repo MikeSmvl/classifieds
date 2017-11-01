@@ -27,7 +27,7 @@
                   id="title"
                   type="title"
                   v-model="title"
-                  required></v-text-field>
+                  :rules="[rules.required, rules.length, rules.pattern]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -36,7 +36,7 @@
                   id="location"
                   type="location"
                   v-model="location"
-                  required></v-text-field>
+                  :rules="[rules.required, rules.length, rules.pattern]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -45,7 +45,7 @@
                   id="imageUrl"
                   type="imageUrl"
                   v-model="imageUrl"
-                  required></v-text-field>
+                  :rules="[rules.required, rules.image]"></v-text-field>
               </v-flex>
               <v-flex>
                 <v-text-field
@@ -53,9 +53,10 @@
                   label="Description"
                   id="description"
                   type="description"
+                  :counter="250"
                   v-model="description"
                   multi-line
-                  required></v-text-field>
+                  :rules="[rules.required, rules.length2, rules.pattern]"></v-text-field>
               </v-flex>
 
               <v-flex xs6>
@@ -106,7 +107,20 @@
         keySubCategory: '',
         alert: false,
         items: this.$store.getters.getCategoryList,
-        subItems: ''
+        subItems: '',
+        rules: {
+          required: (value) => value.length > 0 || 'Required field',
+          length: (value) => value.length < 51 || 'Max 50 characters',
+          length2: (value) => value.length < 251 || 'Max 250 characters',
+          pattern: (value) => {
+            const pattern = /^[a-zA-Z\u00C0-\u017F0-9\s:\-,.!@#$%^&*()]+$/
+            return pattern.test(value) || 'Invalid special characters'
+          },
+          image: (value) => {
+            const pattern = /^[^<>;]+$/
+            return pattern.test(value) || 'Not a valid link'
+          }
+        }
       }
     },
     computed: {

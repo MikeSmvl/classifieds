@@ -1,7 +1,7 @@
 [
   {
     "key":"",
-    "name":"-- -- -- -- -- --"
+    "name":"Select Category"
   },
   {
     "key":"Buy & Sell",
@@ -9,7 +9,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Arts & Collectibles",
@@ -39,7 +39,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Cars & Trucks",
@@ -69,7 +69,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Apartments & Condos for Rent",
@@ -99,7 +99,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Animal & Pet Services",
@@ -129,7 +129,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Accounting & Management",
@@ -159,7 +159,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Childcare & Nanny",
@@ -189,7 +189,7 @@
     "subCategories":[
       {
         "key":"",
-        "name":"-- -- -- -- -- --"
+        "name":"Select Subcategory"
       },
       {
         "key":"Activities & Groups",

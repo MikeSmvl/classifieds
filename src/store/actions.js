@@ -61,9 +61,6 @@ export const actions = {
         console.log(error)
       })
   },
-  getCategories ({commit}) {
-    retrieveCategoryList({commit})
-  },
   filterSubCategory ({commit}, payload) {
     var keyCategory = payload.keyCategory
     var subCategoryList = ''
@@ -76,6 +73,33 @@ export const actions = {
       }
     }
     commit('setSubCategoryList', subCategoryList)
+  },
+  search ({ commit }, payload) {
+    const input = {
+      searchInput: payload.searchInput
+    }
+    firebase.database().ref('ads').orderByChild('title').startAt(input.searchInput).endAt(input.searchInput + '\uf8ff')
+      .once('value').then(function (snapshot) {
+        // Creates an array with length of snapshot size
+        let searchList = new Array(Object.keys(snapshot).length)
+        // Pushes data into the array
+        snapshot.forEach(ad => {
+          searchList.push({
+            date: ad.val().date,
+            description: ad.val().description,
+            imageUrl: ad.val().imageUrl,
+            location: ad.val().location,
+            title: ad.val().title,
+            key: ad.key
+          })
+        })
+        // Filter out the items that are null
+        const reformattedSearchList = searchList.filter(ad => ad !== null)
+        // Mutate the AdList by modifying the state
+        commit('setSearchList', reformattedSearchList)
+        router.push('/searchresults')
+      }
+      )
   }
 }
 
