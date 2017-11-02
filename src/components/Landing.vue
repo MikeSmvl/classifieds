@@ -1,7 +1,8 @@
 <template>
   <v-content>
+
     <section>
-      <v-parallax height="600" src="https://raw.githubusercontent.com/vuetifyjs/parallax-starter/master/template/assets/hero.jpeg">
+      <v-parallax height="600" src="/static/hero.jpeg">
         <v-layout column align-center justify-center>
           <h1 class="black--text">Classifieds</h1>
           <h4 class="black--text">Post your ad today!</h4>
@@ -11,6 +12,23 @@
           <v-btn to="/signin">Sign In</v-btn>
         </v-flex>
       </v-parallax>
+    </section>
+
+    <section>
+      <v-layout
+        wrap
+        class="my-5"
+        align-center
+      >
+        <template>
+          <v-layout column>
+            <searchbar></searchbar>
+            <v-flex class="text-xs-center" mt-5>
+            </v-flex>
+            <adList></adList>
+          </v-layout>
+        </template>
+      </v-layout>
     </section>
 
     <section>
@@ -144,6 +162,47 @@
   </v-content>
 </template>
 <script>
+  import AdList from './AdList.vue'
+  import Searchbar from '../components/Searchbar.vue'
   export default {
+    data () {
+      return {
+        email: 'guest@guest.guest',
+        password: 'guestGUEST123!@#',
+        alert: false
+      }
+    },
+    watch: {
+      error (value) {
+        if (value) {
+          this.alert = true
+        }
+      },
+      alert (value) {
+        if (!value) {
+          this.$store.dispatch('setError', false)
+        }
+      }
+    },
+    methods: {
+      guestSignIn () {
+        this.$store.dispatch('guestSignIn', {email: this.email, password: this.password})
+      }
+    },
+    beforeMount () {
+      this.guestSignIn()
+    },
+    computed: {
+      error () {
+        return this.$store.getters.getError
+      },
+      loading () {
+        return this.$store.getters.getLoading
+      }
+    },
+    components: {
+      Searchbar,
+      'adList': AdList
+    }
   }
 </script>

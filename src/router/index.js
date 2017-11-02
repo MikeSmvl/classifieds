@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import firebase from 'firebase'
 
 const routerOptions = [
-  { path: '/', component: 'Landing', meta: { requiresGuest: true } },
+  { path: '/', component: 'Landing' },
   { path: '/signin', component: 'Signin' },
   { path: '/signup', component: 'Signup' },
   { path: '/home', component: 'Home', meta: { requiresAuth: true } },
@@ -38,15 +38,6 @@ router.beforeEach((to, from, next) => {
   const user = firebase.auth().currentUser
   if (requiresAuth && !user) {
     next('/signin')
-  }
-  next()
-})
-// Used to redirect landing page to home page for logged in users
-router.beforeEach((to, from, next) => {
-  const requiresGuest = to.matched.some(record => record.meta.requiresGuest)
-  const user = firebase.auth().currentUser
-  if (requiresGuest && user) {
-    next('/home')
   }
   next()
 })

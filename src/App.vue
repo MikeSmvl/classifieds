@@ -30,10 +30,10 @@
         </v-toolbar-side-icon>
       </span>
       <v-toolbar-title>
-        <router-link to="/" v-if="!(isAuthenticated)" tag="span" style="cursor: pointer">
+        <router-link to="/" v-if="!(isAuthenticated) || (getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')" tag="span" style="cursor: pointer">
           {{appTitle}}
         </router-link>
-        <router-link to="/home" v-if="isAuthenticated" tag="span" style="cursor: pointer">
+        <router-link to="/home" v-if="isAuthenticated && !(getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')" tag="span" style="cursor: pointer">
           {{appTitle}}
         </router-link>
       </v-toolbar-title>
@@ -45,11 +45,11 @@
           </v-icon>
           {{item.title}}
         </v-btn>
-        <v-btn to="/signin" flat v-if="!(isAuthenticated)">Sign in</v-btn>
-        <v-btn to="/signup" flat v-if="!(isAuthenticated)">Register</v-btn>
-        <v-btn to="/userProfile" flat v-if="isAuthenticated">My Profile</v-btn>
-        <v-btn to="/postad" class="green accent-4" flat v-if="isAuthenticated">Post ad</v-btn>
-        <v-btn flat v-if="isAuthenticated" @click="userSignOut">
+        <v-btn to="/signin" @click="guestSignOutSignInPage" flat v-if="!(isAuthenticated && !(getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2'))">Sign in</v-btn>
+        <v-btn to="/signup" @click="guestSignOutSignUpPage" flat v-if="!(isAuthenticated) || (getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')">Register</v-btn>
+        <v-btn to="/userProfile" flat v-if="isAuthenticated && !(getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')">My Profile</v-btn>
+        <v-btn to="/postad" class="green accent-4" flat v-if="isAuthenticated && !(getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')">Post ad</v-btn>
+        <v-btn flat v-if="isAuthenticated && !(getUser.uid==='ORx5UfD5RVNaUXW46QHrc40Puks2')" @click="userSignOut">
           <v-icon left>exit_to_app</v-icon>
             Sign Out
         </v-btn>
@@ -114,11 +114,20 @@
       },
       isAuthenticated () {
         return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+      },
+      getUser () {
+        return this.$store.getters.getUser
       }
     },
     methods: {
       userSignOut () {
         this.$store.dispatch('userSignOut')
+      },
+      guestSignOutSignInPage () {
+        this.$store.dispatch('guestSignOutSignInPage')
+      },
+      guestSignOutSignUpPage () {
+        this.$store.dispatch('guestSignOutSignUpPage')
       }
     }
   }
