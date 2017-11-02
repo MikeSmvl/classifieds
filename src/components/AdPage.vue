@@ -37,19 +37,7 @@
 <script>
 export default {
   data () {
-    return {
-      items: [
-        {
-          src: 'https://i.imgur.com/koCQSPC.jpg'
-        },
-        {
-          src: 'https://i.imgur.com/oXc9Qx2.jpg'
-        },
-        {
-          src: 'https://i.imgur.com/GiGTZJb.jpg'
-        }
-      ]
-    }
+    return {}
   },
   computed: {
     ad () {

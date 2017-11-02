@@ -23,6 +23,7 @@
 
               <v-flex>
                 <v-text-field
+                  box
                   name="title"
                   label="Title"
                   id="title"
@@ -33,6 +34,7 @@
 
               <v-flex>
                 <v-text-field
+                  box
                   name="location"
                   label="Location"
                   id="location"
@@ -57,6 +59,7 @@
 
               <v-flex>
                 <v-text-field
+                  textarea
                   name="description"
                   label="Description"
                   id="description"
@@ -108,7 +111,7 @@
         location: '',
         imageUrl: '',
         description: '',
-        date: '',
+        date: new Date(),
         keyCategory: '',
         keySubCategory: '',
         alert: false,
@@ -141,12 +144,12 @@
         if (!this.image) {
           return
         }
-        this.date = new Date()
-        this.$store.dispatch('createAd', {title: this.title,
+        this.$store.dispatch('createAd', {
+          title: this.title,
           location: this.location,
           image: this.image,
           description: this.description,
-          date: this.date.getTime(),
+          date: this.submittableDateTime,
           keyCategory: this.keyCategory + ((this.keySubCategory.length > 0) ? ',' + this.keySubCategory : '')})
       }
     },
@@ -171,6 +174,19 @@
         })
         fileReader.readAsDataURL(files[0])
         this.image = files[0]
+      },
+      submittableDateTime () {
+        const date = new Date(this.date)
+        if (typeof this.time === 'string') {
+          let hours = this.time.match(/^(\d+)/)[1]
+          const minutes = this.time.match(/:(\d+)/)[1]
+          date.setHours(hours)
+          date.setMinutes(minutes)
+        } else {
+          date.setHours(this.time.getHours())
+          date.setMinutes(this.time.getMinutes())
+        }
+        return date
       }
     },
     watch: {
@@ -187,4 +203,3 @@
     }
   }
 </script>
-<link rel="stylesheet" type="text/css" href="../../scripts/imgur.min.css">
