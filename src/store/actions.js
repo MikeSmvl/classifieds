@@ -126,7 +126,6 @@ const createAdOwnerLink = ({ commit }, payload) => {
     .ref('ownerAds')
     .once('value', snapshot => {
       // Check if the owner is in one of those model
-      // if (snapshot.numChildren() !== 0) {
       let isUpdated = false
       snapshot.forEach(owner => {
         console.log(owner)
@@ -135,6 +134,7 @@ const createAdOwnerLink = ({ commit }, payload) => {
           isUpdated = true
           const newAdList = owner.val().adKeyList
           newAdList.push(adKey)
+          commit('setOwnerAdList', newAdList)
           const updatedOwnerAds = {
             userKey: userKey,
             adKeyList: newAdList
@@ -150,8 +150,9 @@ const createAdOwnerLink = ({ commit }, payload) => {
         }
       })
 
-      // No owner is matched, create a new model
+      // If no owner is matched, create a new model
       if (!isUpdated) {
+        commit('setOwnerAdList', [adKey])
         firebase
           .database()
           .ref('ownerAds')
@@ -163,20 +164,6 @@ const createAdOwnerLink = ({ commit }, payload) => {
             console.log(err)
           })
       }
-      // }
-      // else {
-      //   // If ownerAds is
-      //   firebase
-      //     .database()
-      //     .ref('ownerAds')
-      //     .push(ownerAds)
-      //     .then(data => {
-      //       console.log('Linked to owner', data)
-      //     })
-      //     .catch(err => {
-      //       console.log(err)
-      //     })
-      // }
     })
 }
 
