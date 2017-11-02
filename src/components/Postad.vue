@@ -1,8 +1,7 @@
 <template>
   <v-layout column>
-
     <v-flex xs12 sm8 md6 offset-sm3>
-      <v-card height="800px">
+      <v-card height="900px">
         <v-card-title class="blue white--text">
           <span class="headline">Post an Ad</span>
           <v-spacer></v-spacer>
@@ -15,11 +14,13 @@
         <v-flex xs8 sm8 offset-xs2 offset-sm2 mt-3>
           <form @submit.prevent="createAd">
             <v-layout column>
+
               <v-flex>
                 <v-alert error dismissible v-model="alert">
                   {{ error }}
                 </v-alert>
               </v-flex>
+
               <v-flex>
                 <v-text-field
                   name="title"
@@ -29,6 +30,7 @@
                   v-model="title"
                   :rules="[rules.required, rules.length, rules.pattern]"></v-text-field>
               </v-flex>
+
               <v-flex>
                 <v-text-field
                   name="location"
@@ -38,15 +40,21 @@
                   v-model="location"
                   :rules="[rules.required, rules.length, rules.pattern]"></v-text-field>
               </v-flex>
+
               <v-flex>
-                <v-text-field
-                  name="imageUrl"
-                  label="Image URL"
-                  id="imageUrl"
-                  type="imageUrl"
-                  v-model="imageUrl"
-                  :rules="[rules.required, rules.image]"></v-text-field>
+                <v-btn raised class="primary" @click="onPickFile">Upload Image</v-btn>
+                <input
+                  type="file"
+                  style="display:none"
+                  ref="fileInput"
+                  accept="image/*"
+                  @change="onFilePicked">
               </v-flex>
+
+              <v-flex>
+                <img :src="imageUrl" height="150">
+              </v-flex>
+
               <v-flex>
                 <v-text-field
                   name="description"
@@ -89,8 +97,6 @@
         </v-flex>
       </v-card>
     </v-flex>
-
-
   </v-layout>
 </template>
 
@@ -108,6 +114,7 @@
         alert: false,
         items: this.$store.getters.getCategoryList,
         subItems: '',
+        image: null,
         rules: {
           required: (value) => value.length > 0 || 'Required field',
           length: (value) => value.length < 51 || 'Max 50 characters',
@@ -131,10 +138,13 @@
         return this.$store.getters.getLoading
       },
       createAd () {
+        if (!this.image) {
+          return
+        }
         this.date = new Date()
         this.$store.dispatch('createAd', {title: this.title,
           location: this.location,
-          imageUrl: this.imageUrl,
+          image: this.image,
           description: this.description,
           date: this.date.getTime(),
           keyCategory: this.keyCategory + ((this.keySubCategory.length > 0) ? ',' + this.keySubCategory : '')})
@@ -145,6 +155,22 @@
         this.$store.dispatch('filterSubCategory', {keyCategory: value})
         this.subItems = this.$store.getters.getSubCategoryList
         this.keySubCategory = ''
+      },
+      onPickFile () {
+        this.$refs.fileInput.click()
+      },
+      onFilePicked (event) {
+        const files = event.target.files
+        let filename = files[0].name
+        if (filename.lastIndexOf('.') <= 0) {
+          return alert('Please add a valid file!')
+        }
+        const fileReader = new FileReader()
+        fileReader.addEventListener('load', () => {
+          this.imageUrl = fileReader.result
+        })
+        fileReader.readAsDataURL(files[0])
+        this.image = files[0]
       }
     },
     watch: {
@@ -161,3 +187,4 @@
     }
   }
 </script>
+<link rel="stylesheet" type="text/css" href="../../scripts/imgur.min.css">

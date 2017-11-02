@@ -8,32 +8,48 @@ export const actions = {
   userSignUp ({commit}, payload) {
     commit('setLoading', true)
     firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-    .then(firebaseUser => {
-      commit('setUser', firebaseUser)
-      retrieveAdList({commit})
-      commit('setLoading', false)
-      router.push('/home')
-    })
-    .catch(error => {
-      commit('setError', error.message)
-      commit('setLoading', false)
-    })
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+        commit('setLoading', false)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
   },
   userSignIn ({commit}, payload) {
     commit('setLoading', true)
     firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-    .then(firebaseUser => {
-      commit('setUser', firebaseUser)
-      retrieveAdList({commit})
-      retrieveCategoryList({commit})
-      commit('setLoading', false)
-      commit('setError', null)
-      router.push('/home')
-    })
-    .catch(error => {
-      commit('setError', error.message)
-      commit('setLoading', false)
-    })
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+        retrieveCategoryList({commit})
+        commit('setLoading', false)
+        commit('setError', null)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
+  },
+  guestSignIn ({commit}, payload) {
+    commit('setLoading', true)
+    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+        retrieveCategoryList({commit})
+        commit('setLoading', false)
+        commit('setError', null)
+        router.push('/')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
   },
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
@@ -43,19 +59,47 @@ export const actions = {
     commit('setUser', null)
     router.push('/')
   },
-  createAd ({commit}, payload) {
+  guestSignOutSignInPage ({commit}) {
+    firebase.auth().signOut()
+    commit('setUser', null)
+    router.push('/signin')
+  },
+  guestSignOutSignUpPage ({commit}) {
+    firebase.auth().signOut()
+    commit('setUser', null)
+    router.push('/signup')
+  },
+  createAd ({commit, getters}, payload) {
     const ad = {
       title: payload.title,
       location: payload.location,
-      imageUrl: payload.imageUrl,
       description: payload.description,
       date: payload.date,
-      keyCategory: payload.keyCategory
+      keyCategory: payload.keyCategory,
+      creatorId: getters.getUser.uid
     }
+    let imageUrl
+    let key
     firebase.database().ref('ads').push(ad)
       .then((data) => {
-        alert('Ad Created')
-        console.log(data)
+        key = data.key
+        return key
+      })
+      .then(key => {
+        const filename = payload.image.name
+        const ext = filename.slice(filename.lastIndexOf('.'))
+        return firebase.storage().ref('ads/' + key + '.' + ext).put(payload.image)
+      })
+      .then(fileData => {
+        imageUrl = fileData.metadata.downloadURLs[0]
+        return firebase.database().ref('ads').child(key).update({imageUrl: imageUrl})
+      })
+      .then(() => {
+        commit('createAd', {
+          ...ad,
+          imageUrl: imageUrl,
+          id: key
+        })
       })
       .catch((error) => {
         console.log(error)
@@ -99,7 +143,7 @@ export const actions = {
         commit('setSearchList', reformattedSearchList)
         router.push('/searchresults')
       }
-      )
+    )
   }
 }
 
