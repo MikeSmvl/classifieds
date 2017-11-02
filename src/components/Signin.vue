@@ -1,7 +1,8 @@
 <template>
-  <v-layout row justify-center>
-    <v-flex xs12 sm5 mr-2>
-      <v-card class="pa-5">
+  <v-container fluid grid-list-md>
+  <v-layout row wrap justify-center>
+    <v-flex xs12 sm6>
+      <v-card class="text-xs-center pa-5">
         <h3>Sign In</h3>
         <form @submit.prevent="userSignIn">
           <v-layout column>
@@ -23,19 +24,18 @@
         </form>
       </v-card>
     </v-flex>
-    <v-flex xs12 sm3 ml-2>
+    <v-flex xs12 sm3>
       <v-card>
-        <v-layout column pa-5>
-          <v-flex>
-          <h6 class="text-sm-center">Not registered yet?</h6>
+          <v-flex class="text-xs-center" pa-4>
+          <h6>Not registered yet?</h6>
         </v-flex>
-          <v-flex class="text-xs-center" mt-5>
+          <v-flex class="text-xs-center" pa-4>
               <v-btn to="/signup" primary>Register now</v-btn>
           </v-flex>
-        </v-layout>
       </v-card>
     </v-flex>
   </v-layout>
+  </v-container>
 </template>
 
 <script>
