@@ -1,49 +1,53 @@
 import firebase from 'firebase'
-import {rootRef} from '../main.js'
+import { rootRef } from '../main.js'
 import router from '@/router'
 
 const categoryJsonObject = require('../category.response.json')
 
 export const actions = {
-  userSignUp ({commit}, payload) {
+  userSignUp ({ commit }, payload) {
     commit('setLoading', true)
-    firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-    .then(firebaseUser => {
-      commit('setUser', firebaseUser)
-      retrieveAdList({commit})
-      commit('setLoading', false)
-      router.push('/home')
-    })
-    .catch(error => {
-      commit('setError', error.message)
-      commit('setLoading', false)
-    })
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({ commit })
+        commit('setLoading', false)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
   },
-  userSignIn ({commit}, payload) {
+  userSignIn ({ commit }, payload) {
     commit('setLoading', true)
-    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-    .then(firebaseUser => {
-      commit('setUser', firebaseUser)
-      retrieveAdList({commit})
-      retrieveCategoryList({commit})
-      commit('setLoading', false)
-      commit('setError', null)
-      router.push('/home')
-    })
-    .catch(error => {
-      commit('setError', error.message)
-      commit('setLoading', false)
-    })
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({ commit })
+        retrieveCategoryList({ commit })
+        commit('setLoading', false)
+        commit('setError', null)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
   },
-  autoSignIn ({commit}, payload) {
+  autoSignIn ({ commit }, payload) {
     commit('setUser', payload)
   },
-  userSignOut ({commit}) {
+  userSignOut ({ commit }) {
     firebase.auth().signOut()
     commit('setUser', null)
     router.push('/')
   },
-  createAd ({commit}, payload) {
+  createAd ({ commit }, payload) {
     const ad = {
       title: payload.title,
       location: payload.location,
@@ -52,16 +56,20 @@ export const actions = {
       date: payload.date,
       keyCategory: payload.keyCategory
     }
-    firebase.database().ref('ads').push(ad)
-      .then((data) => {
+    firebase
+      .database()
+      .ref('ads')
+      .push(ad)
+      .then(data => {
         alert('Ad Created')
         console.log(data)
+        createAdOwnerLink({ commit }, data.key)
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
       })
   },
-  filterSubCategory ({commit}, payload) {
+  filterSubCategory ({ commit }, payload) {
     var keyCategory = payload.keyCategory
     var subCategoryList = ''
     for (var i = 0; i < categoryJsonObject.length; i++) {
@@ -78,8 +86,14 @@ export const actions = {
     const input = {
       searchInput: payload.searchInput
     }
-    firebase.database().ref('ads').orderByChild('title').startAt(input.searchInput).endAt(input.searchInput + '\uf8ff')
-      .once('value').then(function (snapshot) {
+    firebase
+      .database()
+      .ref('ads')
+      .orderByChild('title')
+      .startAt(input.searchInput)
+      .endAt(input.searchInput + '\uf8ff')
+      .once('value')
+      .then(function (snapshot) {
         // Creates an array with length of snapshot size
         let searchList = new Array(Object.keys(snapshot).length)
         // Pushes data into the array
@@ -98,13 +112,74 @@ export const actions = {
         // Mutate the AdList by modifying the state
         commit('setSearchList', reformattedSearchList)
         router.push('/searchresults')
-      }
-      )
+      })
   }
 }
 
-const retrieveAdList = ({commit}) => {
-  rootRef.orderByValue().on('value', (snapshot) => {
+const createAdOwnerLink = ({ commit }, payload) => {
+  const userKey = firebase.auth().currentUser.uid
+  const adKey = payload
+  const ownerAds = { userKey: userKey, adKeyList: [adKey] }
+
+  firebase
+    .database()
+    .ref('ownerAds')
+    .once('value', snapshot => {
+      // Check if the owner is in one of those model
+      if (snapshot.numChildren() !== 0) {
+        let isUpdated = false
+        snapshot.forEach(owner => {
+          console.log(owner)
+          // If key matches current user, update Ad list
+          if (owner.val().userKey === userKey) {
+            isUpdated = true
+            const newAdList = owner.val().adKeyList
+            newAdList.push(adKey)
+            const updatedOwnerAds = {
+              userKey: userKey,
+              adKeyList: newAdList
+            }
+            var updates = {}
+            updates['/ownerAds/' + owner.key] = updatedOwnerAds
+
+            // Update to database
+            firebase
+              .database()
+              .ref()
+              .update(updates)
+          }
+        })
+
+        // No owner is matched, create a new model
+        if (!isUpdated) {
+          firebase
+            .database()
+            .ref('ownerAds')
+            .push(ownerAds)
+            .then(data => {
+              console.log('Linked to owner', data)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      } else {
+        firebase
+          .database()
+          .ref('ownerAds')
+          .push(ownerAds)
+          .then(data => {
+            console.log('Linked to owner', data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    })
+}
+
+const retrieveAdList = ({ commit }) => {
+  rootRef.orderByValue().on('value', snapshot => {
     // Creates an array with length of snapshot size
     let adList = new Array(Object.keys(snapshot).length)
     // Pushes data into the array
@@ -125,6 +200,6 @@ const retrieveAdList = ({commit}) => {
   })
 }
 
-const retrieveCategoryList = ({commit}) => {
+const retrieveCategoryList = ({ commit }) => {
   commit('setCategoryList', categoryJsonObject)
 }

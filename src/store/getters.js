@@ -22,5 +22,8 @@ export const getters = {
   },
   getSearchList (state) {
     return state.searchList
+  },
+  getOwnerAdList (state) {
+    return state.ownerAdList
   }
 }

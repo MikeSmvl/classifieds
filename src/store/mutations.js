@@ -19,5 +19,8 @@ export const mutations = {
   },
   setSearchList (state, payload) {
     state.searchList = payload
+  },
+  setOwnerAdList (state, payload) {
+    state.ownerAdList = payload
   }
 }

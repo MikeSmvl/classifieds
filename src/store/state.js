@@ -5,6 +5,7 @@ export const state = {
   searchList: [],
   categoryList: [],
   subCategoryList: [],
+  ownerAdList: [],
   error: null,
   loading: false
 }

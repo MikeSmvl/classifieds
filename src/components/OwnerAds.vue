@@ -38,3 +38,37 @@
     </v-flex>
   </v-container>
 </template>
+
+<script>
+export default {
+  data () {
+    return {
+      items: [
+        {
+          src: 'https://i.imgur.com/koCQSPC.jpg'
+        },
+        {
+          src: 'https://i.imgur.com/oXc9Qx2.jpg'
+        },
+        {
+          src: 'https://i.imgur.com/GiGTZJb.jpg'
+        }
+      ]
+    }
+  },
+  computed: {
+    ad () {
+      const adList = this.$store.getters.getAdList
+      const key = this.$route.params.id
+      const findAd = (adItem) => adItem.key === key
+      const ad = adList.find(findAd)
+      return ad
+    }
+  },
+  methods: {
+    returnToHome () {
+      this.$router.go(-1)
+    }
+  }
+}
+</script>
