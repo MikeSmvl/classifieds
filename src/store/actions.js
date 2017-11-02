@@ -118,7 +118,7 @@ export const actions = {
     }
     commit('setSubCategoryList', subCategoryList)
   },
-  search ({ commit }, payload) {
+  search ({commit}, payload) {
     const input = {
       searchInput: payload.searchInput
     }
@@ -134,6 +134,7 @@ export const actions = {
             imageUrl: ad.val().imageUrl,
             location: ad.val().location,
             title: ad.val().title,
+            creatorId: ad.val().creatorId,
             key: ad.key
           })
         })
@@ -159,6 +160,7 @@ const retrieveAdList = ({commit}) => {
         imageUrl: ad.val().imageUrl,
         location: ad.val().location,
         title: ad.val().title,
+        creatorId: ad.val().creatorId,
         key: ad.key
       })
     })
