@@ -41,7 +41,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       items: [
         {
@@ -57,16 +57,16 @@ export default {
     }
   },
   computed: {
-    ad () {
+    ad() {
       const adList = this.$store.getters.getAdList
       const key = this.$route.params.id
-      const findAd = (adItem) => adItem.key === key
+      const findAd = adItem => adItem.key === key
       const ad = adList.find(findAd)
       return ad
     }
   },
   methods: {
-    returnToHome () {
+    returnToHome() {
       this.$router.go(-1)
     }
   }

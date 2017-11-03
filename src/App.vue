@@ -47,7 +47,7 @@
         </v-btn>
         <v-btn to="/signin" flat v-if="!(isAuthenticated)">Sign in</v-btn>
         <v-btn to="/signup" flat v-if="!(isAuthenticated)">Register</v-btn>
-        <v-btn to="/userProfile" flat v-if="isAuthenticated">My Profile</v-btn>
+        <v-btn to="/userProfile" flat v-if="isAuthenticated" v-on:click.native="getOwnerAds()">My Profile</v-btn>
         <v-btn to="/postad" class="green accent-4" flat v-if="isAuthenticated">Post ad</v-btn>
         <v-btn flat v-if="isAuthenticated" @click="userSignOut">
           <v-icon left>exit_to_app</v-icon>
@@ -71,58 +71,56 @@
 </template>
 
 <script>
-  import VListTile from 'vuetify/src/components/VList/VListTile'
-  import VListTileAction from 'vuetify/src/components/VList/VListTileAction'
-  import VIcon from '../node_modules/vuetify/src/components/VIcon/VIcon.vue'
-  import VToolbar from '../node_modules/vuetify/src/components/VToolbar/VToolbar.vue'
-  import VBtn from '../node_modules/vuetify/src/components/VBtn/VBtn.vue'
-  import Searchbar from './components/Searchbar.vue'
+import VListTile from 'vuetify/src/components/VList/VListTile'
+import VListTileAction from 'vuetify/src/components/VList/VListTileAction'
+import VIcon from '../node_modules/vuetify/src/components/VIcon/VIcon.vue'
+import VToolbar from '../node_modules/vuetify/src/components/VToolbar/VToolbar.vue'
+import VBtn from '../node_modules/vuetify/src/components/VBtn/VBtn.vue'
+import Searchbar from './components/Searchbar.vue'
 
-  export default {
-    components: {
-      VBtn,
-      VToolbar,
-      VIcon,
-      VListTileAction,
-      VListTile,
-      Searchbar
-    },
-    data () {
-      return {
-        // appTitle: 'Classified Exchange App',
-        sidebar: false,
-        menuItems () {
-          if (this.isAuthenticated) {
-            return [
-             { title: 'Home', path: '/home', icon: 'home' }
-            ]
-          } else {
-            return [
-             { title: 'Sign Up', path: '/signup', icon: 'face' },
-             { title: 'Sign In', path: '/signin', icon: 'lock_open' }
-            ]
-          }
-        },
-        adminItems: [
-          { title: 'Categories', path: '/categories' }
-        ]
-      }
-    },
-    computed: {
-      appTitle () {
-        return this.$store.getters.appTitle
+export default {
+  components: {
+    VBtn,
+    VToolbar,
+    VIcon,
+    VListTileAction,
+    VListTile,
+    Searchbar
+  },
+  data: function() {
+    return {
+      // appTitle: 'Classified Exchange App',
+      sidebar: false,
+      menuItems() {
+        if (this.isAuthenticated) {
+          return [{ title: 'Home', path: '/home', icon: 'home' }]
+        } else {
+          return [
+            { title: 'Sign Up', path: '/signup', icon: 'face' },
+            { title: 'Sign In', path: '/signin', icon: 'lock_open' }
+          ]
+        }
       },
-      isAuthenticated () {
-        return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
-      }
+      adminItems: [{ title: 'Categories', path: '/categories' }]
+    }
+  },
+  computed: {
+    appTitle: function() {
+      return this.$store.getters.appTitle
     },
-    methods: {
-      userSignOut () {
-        this.$store.dispatch('userSignOut')
-      }
+    isAuthenticated: function() {
+      return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+    }
+  },
+  methods: {
+    userSignOut() {
+      this.$store.dispatch('userSignOut')
+    },
+    getOwnerAds() {
+      this.$store.dispatch('getOwnerAds')
     }
   }
-
+}
 </script>
 
 <style lang="stylus">

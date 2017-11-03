@@ -27,22 +27,21 @@
 
 <script>
 import Searchbar from '../components/Searchbar.vue'
-export default
-{
+export default {
   components: {
     Searchbar
   },
-  data () {
+  data() {
     return {}
   },
   computed: {
-    searchList () {
+    searchList() {
       return this.$store.getters.getSearchList
     }
   },
   methods: {
-    displayAdInfo (key) {
-      this.$router.push({path: `/searchresults/${key}`})
+    displayAdInfo(key) {
+      this.$router.push({ path: `/searchresults/${key}` })
     }
   }
 }

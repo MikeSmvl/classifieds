@@ -95,69 +95,72 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        title: '',
-        location: '',
-        imageUrl: '',
-        description: '',
-        date: '',
-        keyCategory: '',
-        keySubCategory: '',
-        alert: false,
-        items: this.$store.getters.getCategoryList,
-        subItems: '',
-        rules: {
-          required: (value) => value.length > 0 || 'Required field',
-          length: (value) => value.length < 51 || 'Max 50 characters',
-          length2: (value) => value.length < 251 || 'Max 250 characters',
-          pattern: (value) => {
-            const pattern = /^[a-zA-Z\u00C0-\u017F0-9\s:\-,.!@#$%^&*()]+$/
-            return pattern.test(value) || 'Invalid special characters'
-          },
-          image: (value) => {
-            const pattern = /^[^<>;]+$/
-            return pattern.test(value) || 'Not a valid link'
-          }
-        }
-      }
-    },
-    computed: {
-      error () {
-        return this.$store.getters.getError
-      },
-      loading () {
-        return this.$store.getters.getLoading
-      },
-      createAd () {
-        this.date = new Date()
-        this.$store.dispatch('createAd', {title: this.title,
-          location: this.location,
-          imageUrl: this.imageUrl,
-          description: this.description,
-          date: this.date.getTime(),
-          keyCategory: this.keyCategory + ((this.keySubCategory.length > 0) ? ',' + this.keySubCategory : '')})
-      }
-    },
-    methods: {
-      onCategoryChange (value) {
-        this.$store.dispatch('filterSubCategory', {keyCategory: value})
-        this.subItems = this.$store.getters.getSubCategoryList
-        this.keySubCategory = ''
-      }
-    },
-    watch: {
-      error (value) {
-        if (value) {
-          this.alert = true
-        }
-      },
-      alert (value) {
-        if (!value) {
-          this.$store.dispatch('setError', false)
+export default {
+  data() {
+    return {
+      title: '',
+      location: '',
+      imageUrl: '',
+      description: '',
+      date: '',
+      keyCategory: '',
+      keySubCategory: '',
+      alert: false,
+      items: this.$store.getters.getCategoryList,
+      subItems: '',
+      rules: {
+        required: value => value.length > 0 || 'Required field',
+        length: value => value.length < 51 || 'Max 50 characters',
+        length2: value => value.length < 251 || 'Max 250 characters',
+        pattern: value => {
+          const pattern = /^[a-zA-Z\u00C0-\u017F0-9\s:\-,.!@#$%^&*()]+$/
+          return pattern.test(value) || 'Invalid special characters'
+        },
+        image: value => {
+          const pattern = /^[^<>;]+$/
+          return pattern.test(value) || 'Not a valid link'
         }
       }
     }
+  },
+  computed: {
+    error() {
+      return this.$store.getters.getError
+    },
+    loading() {
+      return this.$store.getters.getLoading
+    },
+    createAd() {
+      this.date = new Date()
+      this.$store.dispatch('createAd', {
+        title: this.title,
+        location: this.location,
+        imageUrl: this.imageUrl,
+        description: this.description,
+        date: this.date.getTime(),
+        keyCategory:
+          this.keyCategory + (this.keySubCategory.length > 0 ? ',' + this.keySubCategory : '')
+      })
+    }
+  },
+  methods: {
+    onCategoryChange(value) {
+      this.$store.dispatch('filterSubCategory', { keyCategory: value })
+      this.subItems = this.$store.getters.getSubCategoryList
+      this.keySubCategory = ''
+    }
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.dispatch('setError', false)
+      }
+    }
   }
+}
 </script>

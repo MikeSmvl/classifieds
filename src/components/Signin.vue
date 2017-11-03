@@ -39,39 +39,38 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        email: '',
-        password: '',
-        alert: false
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      alert: false
+    }
+  },
+  computed: {
+    error() {
+      return this.$store.getters.getError
+    },
+    loading() {
+      return this.$store.getters.getLoading
+    }
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true
       }
     },
-    computed: {
-      error () {
-        return this.$store.getters.getError
-      },
-      loading () {
-        return this.$store.getters.getLoading
-      }
-    },
-    watch: {
-      error (value) {
-        if (value) {
-          this.alert = true
-        }
-      },
-      alert (value) {
-        if (!value) {
-          this.$store.dispatch('setError', false)
-        }
-      }
-    },
-    methods: {
-      userSignIn () {
-        this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
+    alert(value) {
+      if (!value) {
+        this.$store.dispatch('setError', false)
       }
     }
+  },
+  methods: {
+    userSignIn() {
+      this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
+    }
   }
-
+}
 </script>

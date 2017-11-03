@@ -1,29 +1,29 @@
 export const getters = {
-  appTitle (state) {
+  appTitle(state) {
     return state.appTitle
   },
-  getUser (state) {
+  getUser(state) {
     return state.user
   },
-  getError (state) {
+  getError(state) {
     return state.error
   },
-  getLoading (state) {
+  getLoading(state) {
     return state.loading
   },
-  getAdList (state) {
+  getAdList(state) {
     return state.adList
   },
-  getCategoryList (state) {
+  getCategoryList(state) {
     return state.categoryList
   },
-  getSubCategoryList (state) {
+  getSubCategoryList(state) {
     return state.subCategoryList
   },
-  getSearchList (state) {
+  getSearchList(state) {
     return state.searchList
   },
-  getOwnerAdList (state) {
+  getOwnerAdList(state) {
     return state.ownerAdList
   }
 }

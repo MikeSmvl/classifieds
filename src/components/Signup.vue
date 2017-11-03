@@ -1,5 +1,5 @@
 <template>
-  
+
     <v-layout row justify-center>
       <v-flex xs12 sm5 mr-2>
         <v-card class="pa-5">
@@ -61,7 +61,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       email: '',
       password: '',
@@ -70,18 +70,18 @@ export default {
     }
   },
   computed: {
-    comparePasswords () {
-      return this.password === this.passwordConfirm ? true : 'Passwords don\'t match'
+    comparePasswords() {
+      return this.password === this.passwordConfirm ? true : "Passwords don't match"
     },
-    error () {
+    error() {
       return this.$store.getters.getError
     },
-    loading () {
+    loading() {
       return this.$store.getters.getLoading
     }
   },
   methods: {
-    userSignUp () {
+    userSignUp() {
       if (this.comparePasswords !== true) {
         return
       }
@@ -89,12 +89,12 @@ export default {
     }
   },
   watch: {
-    error (value) {
+    error(value) {
       if (value) {
         this.alert = true
       }
     },
-    alert (value) {
+    alert(value) {
       if (!value) {
         this.$store.dispatch('setError', null)
       }

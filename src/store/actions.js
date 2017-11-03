@@ -5,7 +5,7 @@ import router from '@/router'
 const categoryJsonObject = require('../category.response.json')
 
 export const actions = {
-  userSignUp ({ commit }, payload) {
+  userSignUp({ commit }, payload) {
     commit('setLoading', true)
     firebase
       .auth()
@@ -21,7 +21,7 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  userSignIn ({ commit }, payload) {
+  userSignIn({ commit }, payload) {
     commit('setLoading', true)
     firebase
       .auth()
@@ -39,15 +39,45 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  autoSignIn ({ commit }, payload) {
+  getOwnerAds({ commit }) {
+    const userKey = firebase.auth().currentUser.uid
+    // Gets the corresponding ownerAd Model
+    firebase
+      .database()
+      .ref('ownerAds')
+      .once('value', snapshot => {
+        snapshot.forEach(model => {
+          if (model.val().userKey === userKey) {
+            const adKeyList = model.val().adKeyList
+
+            firebase
+              .database()
+              .ref('ads')
+              .once('value', snapshot => {
+                let newArray = []
+
+                snapshot.forEach(ad => {
+                  adKeyList.forEach(adKey => {
+                    if (adKey === ad.key) {
+                      newArray.push(ad.val())
+                    }
+                  })
+                })
+                commit('setOwnerAdList', newArray)
+              })
+          }
+        })
+      })
+  },
+  autoSignIn({ commit }, payload) {
     commit('setUser', payload)
   },
-  userSignOut ({ commit }) {
+  userSignOut({ commit }) {
     firebase.auth().signOut()
     commit('setUser', null)
     router.push('/')
   },
-  createAd ({ commit }, payload) {
+  createAd({ commit }, payload) {
     const ad = {
       title: payload.title,
       location: payload.location,
@@ -63,13 +93,13 @@ export const actions = {
       .then(data => {
         alert('Ad Created')
         console.log(data)
-        createAdOwnerLink({ commit }, data.key)
+        createAdOwnerLink(data.key)
       })
       .catch(error => {
         console.log(error)
       })
   },
-  filterSubCategory ({ commit }, payload) {
+  filterSubCategory({ commit }, payload) {
     var keyCategory = payload.keyCategory
     var subCategoryList = ''
     for (var i = 0; i < categoryJsonObject.length; i++) {
@@ -82,7 +112,7 @@ export const actions = {
     }
     commit('setSubCategoryList', subCategoryList)
   },
-  search ({ commit }, payload) {
+  search({ commit }, payload) {
     const input = {
       searchInput: payload.searchInput
     }
@@ -93,7 +123,7 @@ export const actions = {
       .startAt(input.searchInput)
       .endAt(input.searchInput + '\uf8ff')
       .once('value')
-      .then(function (snapshot) {
+      .then(function(snapshot) {
         // Creates an array with length of snapshot size
         let searchList = new Array(Object.keys(snapshot).length)
         // Pushes data into the array
@@ -116,7 +146,7 @@ export const actions = {
   }
 }
 
-const createAdOwnerLink = ({ commit }, payload) => {
+const createAdOwnerLink = payload => {
   const userKey = firebase.auth().currentUser.uid
   const adKey = payload
   const ownerAds = { userKey: userKey, adKeyList: [adKey] }
@@ -134,7 +164,6 @@ const createAdOwnerLink = ({ commit }, payload) => {
           isUpdated = true
           const newAdList = owner.val().adKeyList
           newAdList.push(adKey)
-          commit('setOwnerAdList', newAdList)
           const updatedOwnerAds = {
             userKey: userKey,
             adKeyList: newAdList
@@ -152,7 +181,6 @@ const createAdOwnerLink = ({ commit }, payload) => {
 
       // If no owner is matched, create a new model
       if (!isUpdated) {
-        commit('setOwnerAdList', [adKey])
         firebase
           .database()
           .ref('ownerAds')

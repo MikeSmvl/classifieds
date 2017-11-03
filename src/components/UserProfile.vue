@@ -56,12 +56,12 @@
 import OwnerAds from './OwnerAds.vue'
 export default {
   computed: {
-    getUser () {
+    getUser() {
       return this.$store.getters.getUser
     }
   },
   components: {
-    'ownerAds': OwnerAds
+    ownerAds: OwnerAds
   }
 }
 </script>

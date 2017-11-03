@@ -30,19 +30,19 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {}
-    },
-    computed: {
-      adList () {
-        return this.$store.getters.getAdList
-      }
-    },
-    methods: {
-      displayAdInfo (key) {
-        this.$router.push({path: `/home/${key}`})
-      }
+export default {
+  data: function() {
+    return {}
+  },
+  computed: {
+    adList: function() {
+      return this.$store.getters.getAdList
+    }
+  },
+  methods: {
+    displayAdInfo: function(key) {
+      this.$router.push({ path: `/home/${key}` })
     }
   }
+}
 </script>
