@@ -15,20 +15,16 @@
     </section>
 
     <section>
-      <v-layout
-        wrap
-        class="my-5"
-        align-center
-      >
         <template>
           <v-layout column>
+            <v-flex mt-5>
             <searchbar></searchbar>
+            </v-flex>
             <v-flex class="text-xs-center" mt-5>
             </v-flex>
             <adList></adList>
           </v-layout>
         </template>
-      </v-layout>
     </section>
 
     <section>

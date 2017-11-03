@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
     <v-flex xs12 sm8 md6 offset-sm3>
-      <v-card height="900px">
+      <v-card height="1000px">
         <v-card-title class="blue white--text">
           <span class="headline">Post an Ad</span>
           <v-spacer></v-spacer>
@@ -123,7 +123,7 @@
           length: (value) => value.length < 51 || 'Max 50 characters',
           length2: (value) => value.length < 251 || 'Max 250 characters',
           pattern: (value) => {
-            const pattern = /^[a-zA-Z\u00C0-\u017F0-9\s:\-,.!@#$%^&*()]+$/
+            const pattern = /^[a-zA-Z\u00C0-\u017F0-9\s:\-,.!@#$%^&*()'+]+$/
             return pattern.test(value) || 'Invalid special characters'
           },
           image: (value) => {
@@ -149,7 +149,7 @@
           location: this.location,
           image: this.image,
           description: this.description,
-          date: this.submittableDateTime,
+          date: this.date,
           keyCategory: this.keyCategory + ((this.keySubCategory.length > 0) ? ',' + this.keySubCategory : '')})
       }
     },
@@ -174,19 +174,6 @@
         })
         fileReader.readAsDataURL(files[0])
         this.image = files[0]
-      },
-      submittableDateTime () {
-        const date = new Date(this.date)
-        if (typeof this.time === 'string') {
-          let hours = this.time.match(/^(\d+)/)[1]
-          const minutes = this.time.match(/:(\d+)/)[1]
-          date.setHours(hours)
-          date.setMinutes(minutes)
-        } else {
-          date.setHours(this.time.getHours())
-          date.setMinutes(this.time.getMinutes())
-        }
-        return date
       }
     },
     watch: {

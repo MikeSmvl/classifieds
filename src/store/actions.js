@@ -100,6 +100,8 @@ export const actions = {
           imageUrl: imageUrl,
           id: key
         })
+        retrieveAdList({commit})
+        router.push('/home')
       })
       .catch((error) => {
         console.log(error)
