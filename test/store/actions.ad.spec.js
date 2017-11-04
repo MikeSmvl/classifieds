@@ -18,13 +18,12 @@ const assert = chai.assert
 
 describe('Ad component', () => {
 
-  before(function() {
-    userActions.signUp({ email: 'adUser.testing@gmail.com', password: 'testing' })
-    userActions.signIn({ email: 'adUser.testing@gmail.com', password: 'testing' })
+  before(function(done) {
+    userActions.signUp({ email: 'aduser.testing@gmail.com', password: 'abcDEF1@' })
+    .then(o => { done() })
   });
 
-  it('Creating dummy ad with valid information', () => {
-
+  it('Creating dummy ad with valid information', (done) => {
     var ad = {
       title: 'Tesla',
       location: 'Montreal',
@@ -36,19 +35,22 @@ describe('Ad component', () => {
     adActions.createAd(ad)
     .then(ad => {
       expect(ad.key).to.be.not.null
+      done()
     })
   })
 
-  it('Removing dummy ad using title', () => {
-    adActions.removeAd({ title: 'lancer' })
+  it('Removing dummy ad using title', (done) => {
+    adActions.removeAd({ title: 'Tesla' })
+    .then(o => {
+      done()
+    })
   })
 
-  after(function() {
-    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'abcDEF1@' })
-    .then(firebaseUser => {
-      userActions.deleteUser(firebaseUser)
+  after(function(done) {
+    userActions.deleteUser(firebase.auth().currentUser)
+    .then(o => {
+      done()
     })
-    process.exit()
   });
 
 })

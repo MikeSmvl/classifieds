@@ -12,5 +12,8 @@ export const userActions = {
   },
   deleteUser (firebaseUser) {
     return firebaseUser.delete()
+  },
+  getAuthenticatedUser() {
+    return firebase.auth().currentUser
   }
 }
