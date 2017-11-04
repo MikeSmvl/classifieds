@@ -40,16 +40,15 @@ describe('Ad component', () => {
   })
 
   it('Removing dummy ad using title', () => {
-    adActions.removeAd({ title: 'Tesla' })
-  })
-
-  it('Retrieving a list of Ads', () => {
-    adActions.findAll()
+    adActions.removeAd({ title: 'lancer' })
   })
 
   after(function() {
-    userActions.signOut()
-    process.exit() // Force exit since there is a bug in the release version of firebase database reference
+    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'abcDEF1@' })
+    .then(firebaseUser => {
+      userActions.deleteUser(firebaseUser)
+    })
+    process.exit()
   });
 
 })

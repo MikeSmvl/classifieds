@@ -16,7 +16,7 @@ const assert = chai.assert
 describe('User component', () => {
 
   it('SignUp dummy user with valid email and valid password', (done) => {
-    userActions.signUp({ email: 'mocha.testing@gmail.com', password: 'testing' })
+    userActions.signUp({ email: 'mocha.testing@gmail.com', password: 'abcDEF1@' })
     .then(firebaseUser => {
       expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
       done()
@@ -24,7 +24,7 @@ describe('User component', () => {
   })
 
   it('SignIn dummy user with valid email and valid password', (done) => {
-    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'testing' })
+    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'abcDEF1@' })
     .then(firebaseUser => {
       expect(firebaseUser.email).to.equal('mocha.testing@gmail.com')
       done()
@@ -40,7 +40,7 @@ describe('User component', () => {
   })
 
   it('Deleting dummy user account', (done) => {
-    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'testing' })
+    userActions.signIn({ email: 'mocha.testing@gmail.com', password: 'abcDEF1@' })
     .then(firebaseUser => {
       userActions.deleteUser(firebaseUser)
       .then(o => {
