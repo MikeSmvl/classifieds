@@ -13,7 +13,7 @@ export const userActions = {
   deleteUser (firebaseUser) {
     return firebaseUser.delete()
   },
-  getAuthenticatedUser() {
+  getAuthenticatedUser () {
     return firebase.auth().currentUser
   }
 }
