@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 
 export const adActions = {
-  
+
   createAd (payload) { // Returns a reference to ad
     const ad = {
       title: payload.title,
@@ -46,7 +46,7 @@ export const adActions = {
       })
       // Filter out the items that are null
       const reformattedAdList = adList.filter(ad => ad !== null)
-      console.log(reformattedAdList);
+      console.log(reformattedAdList)
       return reformattedAdList
     })
   }
