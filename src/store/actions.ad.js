@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 
 export const adActions = {
+
   createAd (payload) { // Returns a reference to ad
     const ad = {
       title: payload.title,
@@ -13,7 +14,7 @@ export const adActions = {
     return firebase.database().ref('ads').push(ad)
   },
   removeAd (payload) {
-    firebase.database().ref('ads').orderByChild('title').startAt(payload.title).endAt(payload.title + '\uf8ff')
+    return firebase.database().ref('ads').orderByChild('title').startAt(payload.title).endAt(payload.title + '\uf8ff')
     .once('value').then(function (snapshot) {
       // Pushes data into the array
       snapshot.forEach(ad => {
@@ -45,6 +46,7 @@ export const adActions = {
       })
       // Filter out the items that are null
       const reformattedAdList = adList.filter(ad => ad !== null)
+      console.log(reformattedAdList)
       return reformattedAdList
     })
   }

@@ -8,16 +8,16 @@ const expect = chai.expect
 const assert = chai.assert
 
 
-describe('getters component', () => {
+describe('Getters component', () => {
 
-  it('Retrive appTitle', ()=> {
+  it('Retrieve appTitle', ()=> {
     const state = {
       appTitle: "Hello"
     }
     expect(getters.appTitle(state)).to.equal("Hello")
   })
 
-  it('Retrive users', () => {
+  it('Retrieve users', () => {
     const state = {
       user : {
         username: "richard",
@@ -27,14 +27,14 @@ describe('getters component', () => {
     expect(getters.getUser(state)).to.equal(state.user)
   })
 
-  it('Retrive searchList', ()=> {
+  it('Retrieve searchList', ()=> {
     const state = {
       searchList : ['car', 'bike']
     }
     expect(getters.getSearchList(state)[0]).to.equal('car')
   })
 
-  it('Retrive loading', () => {
+  it('Retrieve loading', () => {
     const state = {
       loading : true
     }
