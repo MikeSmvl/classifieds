@@ -109,8 +109,6 @@ export const actions = {
     let imageUrl
     let key
     firebase.database().ref('ads').push(ad)
-  createAd ({commit}, payload) {
-    adActions.createAd(payload)
       .then((data) => {
         key = data.key
         return key
