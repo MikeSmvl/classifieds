@@ -3,7 +3,6 @@ import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
 import {categoryActions} from './actions.category'
-import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -26,7 +25,9 @@ export const actions = {
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
         retrieveAdList({commit})
+/*
         retrieveCategoryList({commit})
+*/
         commit('setLoading', false)
         commit('setError', null)
         router.push('/home')
@@ -42,7 +43,9 @@ export const actions = {
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
         retrieveAdList({commit})
+/*
         retrieveCategoryList({commit})
+*/
         commit('setLoading', false)
         commit('setError', null)
         router.push('/')
@@ -63,6 +66,7 @@ export const actions = {
       commit('setLoading', false)
     })
   },
+  /*
   userSignIn ({commit}, payload) {
     commit('setLoading', true)
     userActions.signIn({ email: payload.email, password: payload.password })
@@ -79,6 +83,7 @@ export const actions = {
       commit('setLoading', false)
     })
   },
+  */
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
   },
