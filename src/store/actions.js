@@ -1,8 +1,9 @@
 import firebase from 'firebase'
 import {rootRef} from '../main.js'
 import router from '@/router'
-
-const categoryJsonObject = require('../category.response.json')
+import {userActions} from './actions.user'
+import {categoryActions} from './actions.category'
+import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -50,12 +51,39 @@ export const actions = {
         commit('setError', error.message)
         commit('setLoading', false)
       })
+    userActions.signUp({ email: payload.email, password: payload.password })
+    .then(firebaseUser => {
+      commit('setUser', firebaseUser)
+      retrieveAdList({commit})
+      commit('setLoading', false)
+      router.push('/home')
+    })
+    .catch(error => {
+      commit('setError', error.message)
+      commit('setLoading', false)
+    })
+  },
+  userSignIn ({commit}, payload) {
+    commit('setLoading', true)
+    userActions.signIn({ email: payload.email, password: payload.password })
+    .then(firebaseUser => {
+      commit('setUser', firebaseUser)
+      retrieveAdList({commit})
+      commit('setCategoryList', categoryActions.getList())
+      commit('setLoading', false)
+      commit('setError', null)
+      router.push('/home')
+    })
+    .catch(error => {
+      commit('setError', error.message)
+      commit('setLoading', false)
+    })
   },
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
   },
   userSignOut ({commit}) {
-    firebase.auth().signOut()
+    userActions.signOut()
     commit('setUser', null)
     router.push('/')
   },
@@ -81,6 +109,8 @@ export const actions = {
     let imageUrl
     let key
     firebase.database().ref('ads').push(ad)
+  createAd ({commit}, payload) {
+    adActions.createAd(payload)
       .then((data) => {
         key = data.key
         return key
@@ -107,18 +137,11 @@ export const actions = {
         console.log(error)
       })
   },
+  getCategories ({commit}) {
+    commit('setCategoryList', categoryActions.getList())
+  },
   filterSubCategory ({commit}, payload) {
-    var keyCategory = payload.keyCategory
-    var subCategoryList = ''
-    for (var i = 0; i < categoryJsonObject.length; i++) {
-      var c = categoryJsonObject[i].key
-      if (c === keyCategory) {
-        if (categoryJsonObject[i].subCategories !== undefined) {
-          subCategoryList = categoryJsonObject[i].subCategories
-        }
-      }
-    }
-    commit('setSubCategoryList', subCategoryList)
+    commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
   search ({commit}, payload) {
     const input = {
@@ -171,8 +194,4 @@ const retrieveAdList = ({commit}) => {
     // Mutate the AdList by modifying the state
     commit('setAdList', reformattedAdList)
   })
-}
-
-const retrieveCategoryList = ({commit}) => {
-  commit('setCategoryList', categoryJsonObject)
 }
