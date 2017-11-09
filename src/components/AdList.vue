@@ -11,10 +11,8 @@
               <v-card-media v-bind:src="ad.imageUrl" height="200px">
               </v-card-media>
               <v-card-title primary-title>
-                <div>
                   <h3 class="headline mb-0"><v-list-tile-title v-html="ad.title"></v-list-tile-title></h3>
                   <v-list-tile-sub-title v-html="ad.description"></v-list-tile-sub-title>
-                </div>
               </v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>

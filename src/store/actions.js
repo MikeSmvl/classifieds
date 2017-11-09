@@ -3,11 +3,57 @@ import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
 import {categoryActions} from './actions.category'
-import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
     commit('setLoading', true)
+    firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+        commit('setLoading', false)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
+  },
+  userSignIn ({commit}, payload) {
+    commit('setLoading', true)
+    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+/*
+        retrieveCategoryList({commit})
+*/
+        commit('setLoading', false)
+        commit('setError', null)
+        router.push('/home')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
+  },
+  guestSignIn ({commit}, payload) {
+    commit('setLoading', true)
+    firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
+      .then(firebaseUser => {
+        commit('setUser', firebaseUser)
+        retrieveAdList({commit})
+/*
+        retrieveCategoryList({commit})
+*/
+        commit('setLoading', false)
+        commit('setError', null)
+        router.push('/')
+      })
+      .catch(error => {
+        commit('setError', error.message)
+        commit('setLoading', false)
+      })
     userActions.signUp({ email: payload.email, password: payload.password })
     .then(firebaseUser => {
       commit('setUser', firebaseUser)
@@ -20,6 +66,7 @@ export const actions = {
       commit('setLoading', false)
     })
   },
+  /*
   userSignIn ({commit}, payload) {
     commit('setLoading', true)
     userActions.signIn({ email: payload.email, password: payload.password })
@@ -36,6 +83,7 @@ export const actions = {
       commit('setLoading', false)
     })
   },
+  */
   autoSignIn ({commit}, payload) {
     commit('setUser', payload)
   },
@@ -44,11 +92,49 @@ export const actions = {
     commit('setUser', null)
     router.push('/')
   },
-  createAd ({commit}, payload) {
-    adActions.createAd(payload)
+  guestSignOutSignInPage ({commit}) {
+    firebase.auth().signOut()
+    commit('setUser', null)
+    router.push('/signin')
+  },
+  guestSignOutSignUpPage ({commit}) {
+    firebase.auth().signOut()
+    commit('setUser', null)
+    router.push('/signup')
+  },
+  createAd ({commit, getters}, payload) {
+    const ad = {
+      title: payload.title,
+      location: payload.location,
+      description: payload.description,
+      date: payload.date,
+      keyCategory: payload.keyCategory,
+      creatorId: getters.getUser.uid
+    }
+    let imageUrl
+    let key
+    firebase.database().ref('ads').push(ad)
       .then((data) => {
-        alert('Ad Created')
-        console.log(data)
+        key = data.key
+        return key
+      })
+      .then(key => {
+        const filename = payload.image.name
+        const ext = filename.slice(filename.lastIndexOf('.'))
+        return firebase.storage().ref('ads/' + key + '.' + ext).put(payload.image)
+      })
+      .then(fileData => {
+        imageUrl = fileData.metadata.downloadURLs[0]
+        return firebase.database().ref('ads').child(key).update({imageUrl: imageUrl})
+      })
+      .then(() => {
+        commit('createAd', {
+          ...ad,
+          imageUrl: imageUrl,
+          id: key
+        })
+        retrieveAdList({commit})
+        router.push('/home')
       })
       .catch((error) => {
         console.log(error)
@@ -60,7 +146,7 @@ export const actions = {
   filterSubCategory ({commit}, payload) {
     commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
-  search ({ commit }, payload) {
+  search ({commit}, payload) {
     const input = {
       searchInput: payload.searchInput
     }
@@ -76,6 +162,7 @@ export const actions = {
             imageUrl: ad.val().imageUrl,
             location: ad.val().location,
             title: ad.val().title,
+            creatorId: ad.val().creatorId,
             key: ad.key
           })
         })
@@ -85,7 +172,7 @@ export const actions = {
         commit('setSearchList', reformattedSearchList)
         router.push('/searchresults')
       }
-      )
+    )
   }
 }
 
@@ -101,6 +188,7 @@ const retrieveAdList = ({commit}) => {
         imageUrl: ad.val().imageUrl,
         location: ad.val().location,
         title: ad.val().title,
+        creatorId: ad.val().creatorId,
         key: ad.key
       })
     })

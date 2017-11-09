@@ -1,5 +1,5 @@
 <template>
-  <v-layout row>
+  <v-layout row wrap>
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-card-media src="https://i.imgur.com/tdi3NGa.png" height="300px">
@@ -49,13 +49,64 @@
         </v-list>
       </v-card>
     </v-flex>
+    <v-flex xs12 sm6 offset-sm3 mt-5>
+      <v-toolbar color="indigo" dark>
+        <v-toolbar-side-icon></v-toolbar-side-icon>
+        <v-toolbar-title>My Ads</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon>
+          <v-icon>search</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-container fluid grid-list-md class="grey lighten-4">
+        <v-layout row wrap>
+          <v-flex
+            v-bind="{ ['xs12']: true }"
+            v-for="ad in adList"
+            :key="ad.title"
+          >
+            <v-card>
+              <v-card-media
+                :src="ad.imageUrl"
+                height="200px"
+              >
+                <v-container fill-height fluid>
+                  <v-layout fill-height>
+                  </v-layout>
+                </v-container>
+              </v-card-media>
+              <v-card-actions class="grey darken-4">
+                <span class="headline white--text" v-text="ad.title"></span>
+                <v-spacer></v-spacer>
+                <v-btn icon>
+                  <v-icon>favorite</v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon>bookmark</v-icon>
+                </v-btn>
+                <v-btn icon>
+                  <v-icon>share</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-flex>
   </v-layout>
 </template>
+
 <script>
   export default {
+    data () {
+      return {}
+    },
     computed: {
       getUser () {
         return this.$store.getters.getUser
+      },
+      adList () {
+        return this.$store.getters.getAdList.filter(item => item.creatorId === this.$store.getters.getUser.uid)
       }
     }
   }
