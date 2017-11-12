@@ -24,7 +24,7 @@ describe('Ad component', () => {
 
   it('Creating dummy ad with valid information', (done) => {
     var ad = {
-      title: 'Tesla',
+      title: 'Tesla Voiture',
       location: 'Montreal',
       imageUrl: 'C:/loadpicture.jpg',
       description: 'This is my new car',
@@ -38,8 +38,45 @@ describe('Ad component', () => {
     })
   })
 
+  //Testing different scenarios for the search functionality
+
+  it('Search by exact match, expecting 1 result', (done) => {
+    adActions.findByTitle('Tesla Voiture', (retrievedList) => {
+      expect(retrievedList.length).to.equal(1)
+      done()
+    })
+  })
+
+  it('Search by first word, matching, expecting 1 result', (done) => {
+    adActions.findByTitle('Tesla', (retrievedList) => {
+      expect(retrievedList.length).to.equal(1)
+      done()
+    })
+  })
+
+  it('Search by using whitespace, expecting no result', (done) => {
+    adActions.findByTitle(' ', (retrievedList) => {
+      expect(retrievedList.length).to.equal(0)
+      done()
+    })
+  })
+
+  it('Search by special characters, expecting no result', (done) => {
+    adActions.findByTitle('è5é&!', (retrievedList) => {
+      expect(retrievedList.length).to.equal(0)
+      done()
+    })
+  })
+
+  it('Search by no match, expecting no result', (done) => {
+    adActions.findByTitle('Mr Thor', (retrievedList) => {
+      expect(retrievedList.length).to.equal(0)
+      done()
+    })
+  })
+
   it('Removing dummy ad using title', (done) => {
-    adActions.removeAd({ title: 'Tesla' })
+    adActions.removeAd({ title: 'Tesla Voiture' })
     .then(o => {
       done()
     })
@@ -47,11 +84,11 @@ describe('Ad component', () => {
 
   it('Number of ads retrieved.', (done) => {
     adActions.findAll((retrievedList) => {
+      console.log(retrievedList.length);
       expect(retrievedList.length).to.be.above(0)
       done()
     })
   })
-
 
   it('Retrieving details of all ads', (done) => {
     adActions.findAll((retrievedList) => {
