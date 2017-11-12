@@ -1,8 +1,8 @@
 import firebase from 'firebase'
-import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
 import {categoryActions} from './actions.category'
+import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -123,54 +123,16 @@ export const actions = {
     commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
   search ({commit}, payload) {
-    const input = {
-      searchInput: payload.searchInput
-    }
-    firebase.database().ref('ads').orderByChild('title').startAt(input.searchInput).endAt(input.searchInput + '\uf8ff')
-      .once('value').then(function (snapshot) {
-        // Creates an array with length of snapshot size
-        let searchList = new Array(Object.keys(snapshot).length)
-        // Pushes data into the array
-        snapshot.forEach(ad => {
-          searchList.push({
-            date: ad.val().date,
-            description: ad.val().description,
-            imageUrl: ad.val().imageUrl,
-            location: ad.val().location,
-            title: ad.val().title,
-            creatorId: ad.val().creatorId,
-            key: ad.key
-          })
-        })
-        // Filter out the items that are null
-        const reformattedSearchList = searchList.filter(ad => ad !== null)
-        // Mutate the AdList by modifying the state
-        commit('setSearchList', reformattedSearchList)
-        router.push('/searchresults')
-      }
-    )
+    adActions.findByTitle(payload.searchInput, (retrievedList) => {
+      // Mutate the AdList by modifying the state
+      commit('setSearchList', retrievedList)
+      router.push('/searchresults')
+    })
   }
 }
 
 const retrieveAdList = ({commit}) => {
-  rootRef.orderByValue().on('value', (snapshot) => {
-    // Creates an array with length of snapshot size
-    let adList = new Array(Object.keys(snapshot).length)
-    // Pushes data into the array
-    snapshot.forEach(ad => {
-      adList.push({
-        date: ad.val().date,
-        description: ad.val().description,
-        imageUrl: ad.val().imageUrl,
-        location: ad.val().location,
-        title: ad.val().title,
-        creatorId: ad.val().creatorId,
-        key: ad.key
-      })
-    })
-    // Filter out the items that are null
-    const reformattedAdList = adList.filter(ad => ad !== null)
-    // Mutate the AdList by modifying the state
-    commit('setAdList', reformattedAdList)
+  adActions.findAll((retrievedList) => {
+    commit('setAdList', retrievedList)
   })
 }

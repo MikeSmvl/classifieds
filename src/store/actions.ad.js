@@ -48,5 +48,28 @@ export const adActions = {
       const reformattedAdList = adList.filter(ad => ad !== null)
       recall(reformattedAdList)
     })
+  },
+  findByTitle (title, recall) {
+    firebase.database().ref('ads').orderByChild('title').startAt(title).endAt(title + '\uf8ff')
+      .once('value').then(function (snapshot) {
+        // Creates an array with length of snapshot size
+        let resultList = new Array(Object.keys(snapshot).length)
+        // Pushes data into the array
+        snapshot.forEach(ad => {
+          resultList.push({
+            date: ad.val().date,
+            description: ad.val().description,
+            imageUrl: ad.val().imageUrl,
+            location: ad.val().location,
+            title: ad.val().title,
+            creatorId: ad.val().creatorId,
+            key: ad.key
+          })
+        })
+        // Filter out the items that are null
+        const reformattedResultList = resultList.filter(ad => ad !== null)
+        recall(reformattedResultList)
+      }
+    )
   }
 }
