@@ -29,7 +29,7 @@ export const adActions = {
       })
     })
   },
-  findAll () {
+  findAll (recall) {
     firebase.database().ref('ads').orderByValue().on('value', (snapshot) => {
       // Creates an array with length of snapshot size
       let adList = new Array(Object.keys(snapshot).length)
@@ -46,8 +46,7 @@ export const adActions = {
       })
       // Filter out the items that are null
       const reformattedAdList = adList.filter(ad => ad !== null)
-      console.log(reformattedAdList)
-      return reformattedAdList
+      recall(reformattedAdList)
     })
   }
 }

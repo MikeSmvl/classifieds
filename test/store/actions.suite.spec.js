@@ -1,20 +1,3 @@
-import firebase from 'firebase'
-import { adActions } from '../../src/store/actions.ad'
-import { userActions } from '../../src/store/actions.user'
-import { mutations } from '../../src/store/mutations'
-import { firebaseConfig } from '../../src/config'
-
-
-if (firebase.apps.length === 0) {
-  firebase.initializeApp(firebaseConfig)
-}
-
-const chai = require('chai')
-const chaiAsPromised = require('chai-as-promised')
-chai.use(chaiAsPromised)
-
-const expect = chai.expect
-const assert = chai.assert
 
 var importComponentSpec = ((name, path) => {
   describe(name, () => {

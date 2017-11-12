@@ -1,7 +1,6 @@
 import firebase from 'firebase'
 import { adActions } from '../../src/store/actions.ad'
 import { userActions } from '../../src/store/actions.user'
-import { mutations } from '../../src/store/mutations'
 import { firebaseConfig } from '../../src/config'
 
 
@@ -42,6 +41,25 @@ describe('Ad component', () => {
   it('Removing dummy ad using title', (done) => {
     adActions.removeAd({ title: 'Tesla' })
     .then(o => {
+      done()
+    })
+  })
+
+  it('Number of ads retrieved.', (done) => {
+    adActions.findAll((retrievedList) => {
+      expect(retrievedList.length).to.be.above(0)
+      done()
+    })
+  })
+
+
+  it('Retrieving details of all ads', (done) => {
+    adActions.findAll((retrievedList) => {
+      if(retrievedList.length > 0) {
+        for (let ad of retrievedList) {
+          expect(ad.key).to.be.not.null
+        }
+      }
       done()
     })
   })
