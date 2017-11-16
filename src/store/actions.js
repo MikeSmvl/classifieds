@@ -5,7 +5,7 @@ import { userActions } from './actions.user'
 import { categoryActions } from './actions.category'
 
 export const actions = {
-  userSignUp ({ commit }, payload) {
+  userSignUp({ commit }, payload) {
     commit('setLoading', true)
     firebase
       .auth()
@@ -21,7 +21,7 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  userSignIn ({ commit }, payload) {
+  userSignIn({ commit }, payload) {
     commit('setLoading', true)
     firebase
       .auth()
@@ -41,7 +41,7 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  guestSignIn ({ commit }, payload) {
+  guestSignIn({ commit }, payload) {
     commit('setLoading', true)
     firebase
       .auth()
@@ -91,25 +91,25 @@ export const actions = {
     })
   },
   */
-  autoSignIn ({ commit }, payload) {
+  autoSignIn({ commit }, payload) {
     commit('setUser', payload)
   },
-  userSignOut ({ commit }) {
+  userSignOut({ commit }) {
     userActions.signOut()
     commit('setUser', null)
     router.push('/')
   },
-  guestSignOutSignInPage ({ commit }) {
+  guestSignOutSignInPage({ commit }) {
     firebase.auth().signOut()
     commit('setUser', null)
     router.push('/signin')
   },
-  guestSignOutSignUpPage ({ commit }) {
+  guestSignOutSignUpPage({ commit }) {
     firebase.auth().signOut()
     commit('setUser', null)
     router.push('/signup')
   },
-  createAd ({ commit, getters }, payload) {
+  createAd({ commit, getters }, payload) {
     const ad = {
       title: payload.title,
       location: payload.location,
@@ -157,13 +157,13 @@ export const actions = {
         console.log(error)
       })
   },
-  getCategories ({ commit }) {
+  getCategories({ commit }) {
     commit('setCategoryList', categoryActions.getList())
   },
-  filterSubCategory ({ commit }, payload) {
+  filterSubCategory({ commit }, payload) {
     commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
-  search ({ commit }, payload) {
+  search({ commit }, payload) {
     const input = {
       searchInput: payload.searchInput,
       currentCat: payload.currentCat,
@@ -171,35 +171,77 @@ export const actions = {
     }
     const cat = input.currentCat === 'undefined' ? '' : input.currentCat
     const subCat = input.currentSubCat === 'undefined' ? '' : input.currentSubCat
+    const combinedCatKey = subCat === '' ? cat : `${cat},${subCat}`
+    const isCatKeyEmpty = combinedCatKey === ''
 
-    firebase
-      .database()
-      .ref('ads')
-      .orderByChild('title')
-      .startAt(input.searchInput)
-      .endAt(input.searchInput + '\uf8ff')
-      .once('value')
-      .then(function (snapshot) {
-        // Creates an array with length of snapshot size
-        let searchList = new Array(Object.keys(snapshot).length)
-        // Pushes data into the array
-        snapshot.forEach(ad => {
-          searchList.push({
-            date: ad.val().date,
-            description: ad.val().description,
-            imageUrl: ad.val().imageUrl,
-            location: ad.val().location,
-            title: ad.val().title,
-            creatorId: ad.val().creatorId,
-            key: ad.key
+    if (isCatKeyEmpty) {
+      firebase
+        .database()
+        .ref('ads')
+        .orderByChild('title')
+        .startAt(input.searchInput)
+        .endAt(input.searchInput + '\uf8ff')
+        .once('value')
+        .then(function(snapshot) {
+          // Creates an array with length of snapshot size
+          let searchList = new Array(Object.keys(snapshot).length)
+          // Pushes data into the array
+          snapshot.forEach(ad => {
+            searchList.push({
+              date: ad.val().date,
+              description: ad.val().description,
+              imageUrl: ad.val().imageUrl,
+              location: ad.val().location,
+              title: ad.val().title,
+              creatorId: ad.val().creatorId,
+              key: ad.key
+            })
           })
+          // Filter out the items that are null
+          const reformattedSearchList = searchList.filter(ad => ad !== null)
+          // Mutate the AdList by modifying the state
+          commit('setSearchList', reformattedSearchList)
+          router.push('/searchresults')
         })
-        // Filter out the items that are null
-        const reformattedSearchList = searchList.filter(ad => ad !== null)
-        // Mutate the AdList by modifying the state
-        commit('setSearchList', reformattedSearchList)
-        router.push('/searchresults')
-      })
+    } else {
+      firebase
+        .database()
+        .ref('ads')
+        .orderByChild('keyCategory')
+        .startAt(combinedCatKey)
+        .endAt(combinedCatKey)
+        .on('value', snapshot => {
+          // Creates an array with length of snapshot size
+          let searchList = new Array(Object.keys(snapshot).length)
+          // Pushes data into Array
+          snapshot.forEach(ad => {
+            searchList.push({
+              date: ad.val().date,
+              description: ad.val().description,
+              imageUrl: ad.val().imageUrl,
+              location: ad.val().location,
+              title: ad.val().title,
+              creatorId: ad.val().creatorId,
+              key: ad.key
+            })
+          })
+          // Filter out the items that are null
+          const reformattedSearchList = searchList.filter(ad => ad != null)
+          // Filter by title
+          let refilteredSearchList = reformattedSearchList
+          if (input.searchInput !== '') {
+            refilteredSearchList = reformattedSearchList.filter(ad => {
+              const adTitle = ad.title.toString()
+              const lowCaseTitle = adTitle.toLowerCase()
+              const lowCaseInput = input.searchInput.toLowerCase()
+              return lowCaseTitle.includes(lowCaseInput)
+            })
+          }
+          // Mutate the AList by modifying the state
+          commit('setSearchList', refilteredSearchList)
+          router.push('/searchresults')
+        })
+    }
   }
 }
 
