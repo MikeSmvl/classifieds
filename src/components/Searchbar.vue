@@ -24,25 +24,29 @@
   </v-layout>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        items: this.$store.getters.getCategoryList,
-        keyCategory: '',
-        keySubCategory: '',
-        subItems: '',
-        searchInput: ''
-      }
+export default {
+  data() {
+    return {
+      items: this.$store.getters.getCategoryList,
+      keyCategory: '',
+      keySubCategory: '',
+      subItems: '',
+      searchInput: ''
+    }
+  },
+  methods: {
+    onCategoryChange(value) {
+      this.$store.dispatch('filterSubCategory', { keyCategory: value })
+      this.subItems = this.$store.getters.getSubCategoryList
+      this.keySubCategory = ''
     },
-    methods: {
-      onCategoryChange (value) {
-        this.$store.dispatch('filterSubCategory', {keyCategory: value})
-        this.subItems = this.$store.getters.getSubCategoryList
-        this.keySubCategory = ''
-      },
-      search () {
-        this.$store.dispatch('search', {searchInput: this.value})
-      }
+    search() {
+      this.$store.dispatch('search', {
+        searchInput: this.value,
+        currentCat: this.keyCategory,
+        currentSubCat: this.keySubCategory
+      })
     }
   }
+}
 </script>
