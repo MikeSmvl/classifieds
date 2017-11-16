@@ -171,8 +171,7 @@ export const actions = {
     }
     const cat = input.currentCat === 'undefined' ? '' : input.currentCat
     const subCat = input.currentSubCat === 'undefined' ? '' : input.currentSubCat
-    console.log(cat, subCat)
-    console.log('hello', input.currentCat + input.currentSubCat)
+
     firebase
       .database()
       .ref('ads')
