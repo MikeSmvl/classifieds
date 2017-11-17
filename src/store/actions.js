@@ -173,6 +173,7 @@ export const actions = {
     const subCat = input.currentCat === '' ? '' : '' + input.currentSubCat
     const combinedCatKey = subCat === '' ? cat : cat + ',' + subCat
     const isCatKeyEmpty = combinedCatKey === ''
+    console.log(combinedCatKey, input.searchInput)
 
     if (isCatKeyEmpty) {
       firebase
@@ -237,18 +238,18 @@ export const actions = {
             const catKey = ad.keyCategory
             return catKey.includes(combinedCatKey)
           })
-
+          console.log(catFilteredSearchList)
           // Filter by title
           let refilteredSearchList = catFilteredSearchList
           if (input.searchInput !== undefined) {
-            refilteredSearchList = reformattedSearchList.filter(ad => {
+            refilteredSearchList = catFilteredSearchList.filter(ad => {
               const adTitle = ad.title.toString()
               const lowCaseTitle = adTitle.toLowerCase()
               const lowCaseInput = input.searchInput.toLowerCase()
               return lowCaseTitle.includes(lowCaseInput)
             })
           }
-
+          console.log(refilteredSearchList)
           // Mutate the AList by modifying the state
           commit('setSearchList', refilteredSearchList)
           router.push('/searchresults')
