@@ -32,6 +32,7 @@ export const actions = {
         /*
         retrieveCategoryList({commit})
 */
+        commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
         router.push('/home')
@@ -52,6 +53,7 @@ export const actions = {
         /*
         retrieveCategoryList({commit})
 */
+        commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
         router.push('/')
