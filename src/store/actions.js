@@ -169,18 +169,15 @@ export const actions = {
       currentCat: payload.currentCat,
       currentSubCat: payload.currentSubCat
     }
-    const cat = input.currentCat === 'undefined' ? '' : input.currentCat
-    const subCat = input.currentSubCat === 'undefined' ? '' : input.currentSubCat
-    const combinedCatKey = subCat === '' ? cat : `${cat},${subCat}`
+    const cat = input.currentCat === 'undefined' || input.currentCat === '' ? '' : input.currentCat
+    const subCat = input.currentCat === '' ? '' : '' + input.currentSubCat
+    const combinedCatKey = subCat === '' ? cat : cat + ',' + subCat
     const isCatKeyEmpty = combinedCatKey === ''
 
     if (isCatKeyEmpty) {
       firebase
         .database()
         .ref('ads')
-        .orderByChild('title')
-        .startAt(input.searchInput)
-        .endAt(input.searchInput + '\uf8ff')
         .once('value')
         .then(function(snapshot) {
           // Creates an array with length of snapshot size
@@ -199,17 +196,24 @@ export const actions = {
           })
           // Filter out the items that are null
           const reformattedSearchList = searchList.filter(ad => ad !== null)
+          // Additional filter for title
+          let refilteredSearchList = reformattedSearchList
+          if (input.searchInput !== '') {
+            refilteredSearchList = reformattedSearchList.filter(ad => {
+              const adTitle = ad.title.toString()
+              const lowCaseTitle = adTitle.toLowerCase()
+              const lowCaseInput = input.searchInput.toLowerCase()
+              return lowCaseTitle.includes(lowCaseInput)
+            })
+          }
           // Mutate the AdList by modifying the state
-          commit('setSearchList', reformattedSearchList)
+          commit('setSearchList', refilteredSearchList)
           router.push('/searchresults')
         })
     } else {
       firebase
         .database()
         .ref('ads')
-        .orderByChild('keyCategory')
-        .startAt(combinedCatKey)
-        .endAt(combinedCatKey)
         .on('value', snapshot => {
           // Creates an array with length of snapshot size
           let searchList = new Array(Object.keys(snapshot).length)
@@ -221,15 +225,22 @@ export const actions = {
               imageUrl: ad.val().imageUrl,
               location: ad.val().location,
               title: ad.val().title,
+              keyCategory: ad.val().keyCategory,
               creatorId: ad.val().creatorId,
               key: ad.key
             })
           })
           // Filter out the items that are null
           const reformattedSearchList = searchList.filter(ad => ad != null)
+
+          let catFilteredSearchList = reformattedSearchList.filter(ad => {
+            const catKey = ad.keyCategory
+            return catKey.includes(combinedCatKey)
+          })
+
           // Filter by title
-          let refilteredSearchList = reformattedSearchList
-          if (input.searchInput !== '') {
+          let refilteredSearchList = catFilteredSearchList
+          if (input.searchInput !== undefined) {
             refilteredSearchList = reformattedSearchList.filter(ad => {
               const adTitle = ad.title.toString()
               const lowCaseTitle = adTitle.toLowerCase()
@@ -237,6 +248,7 @@ export const actions = {
               return lowCaseTitle.includes(lowCaseInput)
             })
           }
+
           // Mutate the AList by modifying the state
           commit('setSearchList', refilteredSearchList)
           router.push('/searchresults')
