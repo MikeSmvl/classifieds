@@ -27,7 +27,7 @@
   export default {
     data () {
       return {
-        items: this.$store.getters.getCategoryList,
+        items: this.$store.getters.getCategoryList.toLowerCase(),
         keyCategory: '',
         keySubCategory: '',
         subItems: '',
@@ -37,11 +37,11 @@
     methods: {
       onCategoryChange (value) {
         this.$store.dispatch('filterSubCategory', {keyCategory: value})
-        this.subItems = this.$store.getters.getSubCategoryList
+        this.subItems = this.$store.getters.getSubCategoryList.toLowerCase()
         this.keySubCategory = ''
       },
       search () {
-        this.$store.dispatch('search', {searchInput: this.value})
+        this.$store.dispatch('search', {searchInput: this.value.toLowerCase()})
       }
     }
   }
