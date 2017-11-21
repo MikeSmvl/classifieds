@@ -1,8 +1,8 @@
 import firebase from 'firebase'
+import {rootRef} from '../main.js'
 import router from '@/router'
 import {userActions} from './actions.user'
 import {categoryActions} from './actions.category'
-import {adActions} from './actions.ad'
 
 export const actions = {
   userSignUp ({commit}, payload) {
@@ -10,7 +10,7 @@ export const actions = {
     userActions.signUp(payload)
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
-        retrieveAdList({commit})
+        retrieveAdList({ commit })
         commit('setLoading', false)
         router.push('/home')
       })
@@ -25,6 +25,7 @@ export const actions = {
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
         retrieveAdList({commit})
+        commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
         router.push('/home')
@@ -40,6 +41,7 @@ export const actions = {
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
         retrieveAdList({commit})
+        commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
         router.push('/')
@@ -48,6 +50,7 @@ export const actions = {
         commit('setError', error.message)
         commit('setLoading', false)
       })
+
     userActions.signUp({ email: payload.email, password: payload.password })
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
@@ -75,6 +78,7 @@ export const actions = {
   },
   guestSignOutSignUpPage ({commit}) {
     userActions.signOut()
+
     commit('setUser', null)
     router.push('/signup')
   },
@@ -89,19 +93,29 @@ export const actions = {
     }
     let imageUrl
     let key
-    firebase.database().ref('ads').push(ad)
-      .then((data) => {
+    firebase
+      .database()
+      .ref('ads')
+      .push(ad)
+      .then(data => {
         key = data.key
         return key
       })
       .then(key => {
         const filename = payload.image.name
         const ext = filename.slice(filename.lastIndexOf('.'))
-        return firebase.storage().ref('ads/' + key + '.' + ext).put(payload.image)
+        return firebase
+          .storage()
+          .ref('ads/' + key + '.' + ext)
+          .put(payload.image)
       })
       .then(fileData => {
         imageUrl = fileData.metadata.downloadURLs[0]
-        return firebase.database().ref('ads').child(key).update({imageUrl: imageUrl})
+        return firebase
+          .database()
+          .ref('ads')
+          .child(key)
+          .update({ imageUrl: imageUrl })
       })
       .then(() => {
         commit('createAd', {
@@ -109,10 +123,10 @@ export const actions = {
           imageUrl: imageUrl,
           id: key
         })
-        retrieveAdList({commit})
+        retrieveAdList({ commit })
         router.push('/home')
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error)
       })
   },
@@ -123,16 +137,119 @@ export const actions = {
     commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
   search ({commit}, payload) {
-    adActions.findByTitle(payload.searchInput, (retrievedList) => {
-      // Mutate the AdList by modifying the state
-      commit('setSearchList', retrievedList)
-      router.push('/searchresults')
-    })
+    const input = {
+      searchInput: payload.searchInput,
+      currentCat: payload.currentCat,
+      currentSubCat: payload.currentSubCat
+    }
+    const cat = input.currentCat === 'undefined' || input.currentCat === '' ? '' : input.currentCat
+    const subCat = input.currentCat === '' ? '' : '' + input.currentSubCat
+    const combinedCatKey = subCat === '' ? cat : cat + ',' + subCat
+    const isCatKeyEmpty = combinedCatKey === ''
+    console.log(combinedCatKey, input.searchInput)
+
+    if (isCatKeyEmpty) {
+      firebase
+        .database()
+        .ref('ads')
+        .once('value')
+        .then(function (snapshot) {
+          // Creates an array with length of snapshot size
+          let searchList = new Array(Object.keys(snapshot).length)
+          // Pushes data into the array
+          snapshot.forEach(ad => {
+            searchList.push({
+              date: ad.val().date,
+              description: ad.val().description,
+              imageUrl: ad.val().imageUrl,
+              location: ad.val().location,
+              title: ad.val().title,
+              creatorId: ad.val().creatorId,
+              key: ad.key
+            })
+          })
+          // Filter out the items that are null
+          const reformattedSearchList = searchList.filter(ad => ad !== null)
+          // Additional filter for title
+          let refilteredSearchList = reformattedSearchList
+          if (input.searchInput !== '') {
+            refilteredSearchList = reformattedSearchList.filter(ad => {
+              const adTitle = ad.title.toString()
+              const lowCaseTitle = adTitle.toLowerCase()
+              const lowCaseInput = input.searchInput.toLowerCase()
+              return lowCaseTitle.includes(lowCaseInput)
+            })
+          }
+          // Mutate the AdList by modifying the state
+          commit('setSearchList', refilteredSearchList)
+          router.push('/searchresults')
+        })
+    } else {
+      firebase
+        .database()
+        .ref('ads')
+        .on('value', snapshot => {
+          // Creates an array with length of snapshot size
+          let searchList = new Array(Object.keys(snapshot).length)
+          // Pushes data into Array
+          snapshot.forEach(ad => {
+            searchList.push({
+              date: ad.val().date,
+              description: ad.val().description,
+              imageUrl: ad.val().imageUrl,
+              location: ad.val().location,
+              title: ad.val().title,
+              keyCategory: ad.val().keyCategory,
+              creatorId: ad.val().creatorId,
+              key: ad.key
+            })
+          })
+          // Filter out the items that are null
+          const reformattedSearchList = searchList.filter(ad => ad != null)
+
+          let catFilteredSearchList = reformattedSearchList.filter(ad => {
+            const catKey = ad.keyCategory
+            return catKey.includes(combinedCatKey)
+          })
+          console.log(catFilteredSearchList)
+          // Filter by title
+          let refilteredSearchList = catFilteredSearchList
+          if (input.searchInput !== undefined) {
+            refilteredSearchList = catFilteredSearchList.filter(ad => {
+              const adTitle = ad.title.toString()
+              const lowCaseTitle = adTitle.toLowerCase()
+              const lowCaseInput = input.searchInput.toLowerCase()
+              return lowCaseTitle.includes(lowCaseInput)
+            })
+          }
+          console.log(refilteredSearchList)
+          // Mutate the AList by modifying the state
+          commit('setSearchList', refilteredSearchList)
+          router.push('/searchresults')
+        })
+    }
   }
 }
 
-const retrieveAdList = ({commit}) => {
-  adActions.findAll((retrievedList) => {
-    commit('setAdList', retrievedList)
+const retrieveAdList = ({ commit }) => {
+  rootRef.orderByValue().on('value', snapshot => {
+    // Creates an array with length of snapshot size
+    let adList = new Array(Object.keys(snapshot).length)
+    // Pushes data into the array
+    snapshot.forEach(ad => {
+      adList.push({
+        date: ad.val().date,
+        description: ad.val().description,
+        imageUrl: ad.val().imageUrl,
+        location: ad.val().location,
+        title: ad.val().title,
+        creatorId: ad.val().creatorId,
+        key: ad.key
+      })
+    })
+    // Filter out the items that are null
+    const reformattedAdList = adList.filter(ad => ad !== null)
+    // Mutate the AdList by modifying the state
+    commit('setAdList', reformattedAdList)
   })
 }
