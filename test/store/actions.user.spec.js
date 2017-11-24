@@ -31,6 +31,11 @@ describe('User component', () => {
     })
   })
 
+  it('Retrieving authenticated user dummy information', () => {
+    var currentUser = userActions.getAuthenticatedUser()
+    expect(currentUser.email).to.equal('mocha.testing@gmail.com')
+  })
+
   it('SignOut previously authenticated dummy user', (done) => {
     userActions.signOut()
     .then(firebaseUser => {
@@ -48,7 +53,7 @@ describe('User component', () => {
         done()
       })
     })
-    
+
   })
 
 })

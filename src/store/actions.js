@@ -1,15 +1,13 @@
 import firebase from 'firebase'
-import { rootRef } from '../main.js'
+import {rootRef} from '../main.js'
 import router from '@/router'
-import { userActions } from './actions.user'
-import { categoryActions } from './actions.category'
+import {userActions} from './actions.user'
+import {categoryActions} from './actions.category'
 
 export const actions = {
-  userSignUp({ commit }, payload) {
+  userSignUp ({commit}, payload) {
     commit('setLoading', true)
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(payload.email, payload.password)
+    userActions.signUp(payload)
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
         retrieveAdList({ commit })
@@ -21,17 +19,12 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  userSignIn({ commit }, payload) {
+  userSignIn ({commit}, payload) {
     commit('setLoading', true)
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(payload.email, payload.password)
+    userActions.signIn(payload)
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
-        retrieveAdList({ commit })
-        /*
-        retrieveCategoryList({commit})
-*/
+        retrieveAdList({commit})
         commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
@@ -42,17 +35,12 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  guestSignIn({ commit }, payload) {
+  guestSignIn ({commit}, payload) {
     commit('setLoading', true)
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(payload.email, payload.password)
+    userActions.signIn(payload)
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
-        retrieveAdList({ commit })
-        /*
-        retrieveCategoryList({commit})
-*/
+        retrieveAdList({commit})
         commit('setCategoryList', categoryActions.getList())
         commit('setLoading', false)
         commit('setError', null)
@@ -62,11 +50,11 @@ export const actions = {
         commit('setError', error.message)
         commit('setLoading', false)
       })
-    userActions
-      .signUp({ email: payload.email, password: payload.password })
+
+    userActions.signUp({ email: payload.email, password: payload.password })
       .then(firebaseUser => {
         commit('setUser', firebaseUser)
-        retrieveAdList({ commit })
+        retrieveAdList({commit})
         commit('setLoading', false)
         router.push('/home')
       })
@@ -75,43 +63,26 @@ export const actions = {
         commit('setLoading', false)
       })
   },
-  /*
-  userSignIn ({commit}, payload) {
-    commit('setLoading', true)
-    userActions.signIn({ email: payload.email, password: payload.password })
-    .then(firebaseUser => {
-      commit('setUser', firebaseUser)
-      retrieveAdList({commit})
-      commit('setCategoryList', categoryActions.getList())
-      commit('setLoading', false)
-      commit('setError', null)
-      router.push('/home')
-    })
-    .catch(error => {
-      commit('setError', error.message)
-      commit('setLoading', false)
-    })
-  },
-  */
-  autoSignIn({ commit }, payload) {
+  autoSignIn ({commit}, payload) {
     commit('setUser', payload)
   },
-  userSignOut({ commit }) {
+  userSignOut ({commit}) {
     userActions.signOut()
     commit('setUser', null)
     router.push('/')
   },
-  guestSignOutSignInPage({ commit }) {
-    firebase.auth().signOut()
+  guestSignOutSignInPage ({commit}) {
+    userActions.signOut()
     commit('setUser', null)
     router.push('/signin')
   },
-  guestSignOutSignUpPage({ commit }) {
-    firebase.auth().signOut()
+  guestSignOutSignUpPage ({commit}) {
+    userActions.signOut()
+
     commit('setUser', null)
     router.push('/signup')
   },
-  createAd({ commit, getters }, payload) {
+  createAd ({commit, getters}, payload) {
     const ad = {
       title: payload.title,
       location: payload.location,
@@ -159,13 +130,13 @@ export const actions = {
         console.log(error)
       })
   },
-  getCategories({ commit }) {
+  getCategories ({commit}) {
     commit('setCategoryList', categoryActions.getList())
   },
-  filterSubCategory({ commit }, payload) {
+  filterSubCategory ({commit}, payload) {
     commit('setSubCategoryList', categoryActions.getSubCategory(payload))
   },
-  search({ commit }, payload) {
+  search ({commit}, payload) {
     const input = {
       searchInput: payload.searchInput,
       currentCat: payload.currentCat,
@@ -182,7 +153,7 @@ export const actions = {
         .database()
         .ref('ads')
         .once('value')
-        .then(function(snapshot) {
+        .then(function (snapshot) {
           // Creates an array with length of snapshot size
           let searchList = new Array(Object.keys(snapshot).length)
           // Pushes data into the array

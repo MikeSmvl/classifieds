@@ -12,3 +12,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.swp
+*.nyc_output
+coverage/

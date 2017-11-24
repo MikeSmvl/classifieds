@@ -17,7 +17,7 @@ describe('Getters component', () => {
     expect(getters.appTitle(state)).to.equal("Hello")
   })
 
-  it('Retrieve users', () => {
+  it('Retrieve getUser', () => {
     const state = {
       user : {
         username: "richard",
@@ -27,14 +27,42 @@ describe('Getters component', () => {
     expect(getters.getUser(state)).to.equal(state.user)
   })
 
-  it('Retrieve searchList', ()=> {
+  it('Retrieve getError', ()=> {
+    const state = {
+      error : ['err1', 'err2']
+    }
+    expect(getters.getError(state)[0]).to.equal('err1')
+  })
+
+  it('Retrieve getSearchList', ()=> {
     const state = {
       searchList : ['car', 'bike']
     }
     expect(getters.getSearchList(state)[0]).to.equal('car')
   })
 
-  it('Retrieve loading', () => {
+  it('Retrieve getAdList', ()=> {
+    const state = {
+      adList : ['ad1', 'ad2']
+    }
+    expect(getters.getAdList(state)[0]).to.equal('ad1')
+  })
+
+  it('Retrieve getCategoryList', ()=> {
+    const state = {
+      categoryList : ['cat1', 'cat2']
+    }
+    expect(getters.getCategoryList(state)[0]).to.equal('cat1')
+  })
+
+  it('Retrieve getSubCategoryList', ()=> {
+    const state = {
+      subCategoryList : ['subCat1', 'subCat2']
+    }
+    expect(getters.getSubCategoryList(state)[0]).to.equal('subCat1')
+  })
+
+  it('Retrieve getLoading', () => {
     const state = {
       loading : true
     }
